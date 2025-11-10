@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamisches Formular mit JSON-Export</title>
+    <title>Dynamisches Formular mit JSON- und HTML-Export</title>
     <style>
         * {
             box-sizing: border-box;
@@ -122,13 +122,21 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 20px;
+            margin-top: 10px;
             width: 100%;
             transition: background 0.3s;
         }
         
         .export-btn:hover {
             background: #219653;
+        }
+        
+        .export-html-btn {
+            background: #9b59b6;
+        }
+        
+        .export-html-btn:hover {
+            background: #8e44ad;
         }
         
         .json-output {
@@ -143,6 +151,16 @@
             overflow-y: auto;
         }
         
+        .success-message {
+            margin-top: 15px;
+            padding: 10px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -151,52 +169,57 @@
     </style>
 </head>
 <body>
-    <h1>Dynamisches Formular mit JSON-Export</h1>
+    <h1>Dynamisches Formular mit JSON- und HTML-Export</h1>
     
     <div class="container">
         <div class="panel form-builder">
             <h2>Feldtypen hinzufügen</h2>
             <div class="field-type">
                 <span>Textfeld (einzeilig)</span>
-                <button type="button" onclick="addField('text')">Hinzufügen</button>
+                <button onclick="addField('text')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Textbereich (mehrzeilig)</span>
-                <button type="button" onclick="addField('textarea')">Hinzufügen</button>
+                <button onclick="addField('textarea')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Auswahlfeld (Dropdown)</span>
-                <button type="button" onclick="addField('select')">Hinzufügen</button>
+                <button onclick="addField('select')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Checkbox</span>
-                <button type="button" onclick="addField('checkbox')">Hinzufügen</button>
+                <button onclick="addField('checkbox')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Radio-Buttons</span>
-                <button type="button" onclick="addField('radio')">Hinzufügen</button>
+                <button onclick="addField('radio')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Datum</span>
-                <button type="button" onclick="addField('date')">Hinzufügen</button>
+                <button onclick="addField('date')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>Zahl</span>
-                <button type="button" onclick="addField('number')">Hinzufügen</button>
+                <button onclick="addField('number')">Hinzufügen</button>
             </div>
             <div class="field-type">
                 <span>E-Mail</span>
-                <button type="button" onclick="addField('email')">Hinzufügen</button>
+                <button onclick="addField('email')">Hinzufügen</button>
             </div>
         </div>
-
+        
         <div class="panel form-preview">
             <h2>Formular-Vorschau</h2>
             <div id="form-preview">
                 <p>Fügen Sie Felder hinzu, um Ihr Formular zu erstellen.</p>
             </div>
             
-            <button type="button" class="export-btn" onclick="exportToJSON()">Als JSON exportieren</button>
+            <button class="export-btn" onclick="exportToJSON()">Als JSON exportieren und herunterladen</button>
+            <button class="export-btn export-html-btn" onclick="exportToHTML()">Als HTML-Seite exportieren und herunterladen</button>
+            
+            <div id="success-message" class="success-message">
+                <!-- Erfolgsmeldung wird hier eingefügt -->
+            </div>
             
             <div id="json-output" class="json-output" style="display: none;">
                 <!-- Hier wird der JSON-Code angezeigt -->
@@ -206,38 +229,43 @@
 
     <script>
         let fieldCounter = 0;
+        let fieldLabels = {}; // Speichert die Feld-Labels für die HTML-Ausgabe
         
         function addField(type) {
             fieldCounter++;
             const fieldId = `field-${fieldCounter}`;
             let fieldHtml = '';
+            let labelText = '';
             
             switch(type) {
                 case 'text':
+                    labelText = `Textfeld ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-input">Textfeld ${fieldCounter}</label>
+                            <label for="${fieldId}-input">${labelText}</label>
                             <input type="text" id="${fieldId}-input" placeholder="Geben Sie Text ein">
                         </div>
                     `;
                     break;
                     
                 case 'textarea':
+                    labelText = `Textbereich ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-textarea">Textbereich ${fieldCounter}</label>
+                            <label for="${fieldId}-textarea">${labelText}</label>
                             <textarea id="${fieldId}-textarea" rows="4" placeholder="Geben Sie mehrzeiligen Text ein"></textarea>
                         </div>
                     `;
                     break;
                     
                 case 'select':
+                    labelText = `Auswahl ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-select">Auswahl ${fieldCounter}</label>
+                            <label for="${fieldId}-select">${labelText}</label>
                             <select id="${fieldId}-select">
                                 <option value="">Bitte wählen</option>
                                 <option value="option1">Option 1</option>
@@ -249,22 +277,24 @@
                     break;
                     
                 case 'checkbox':
+                    labelText = `Checkbox ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
                             <label>
                                 <input type="checkbox" id="${fieldId}-checkbox">
-                                Checkbox ${fieldCounter}
+                                ${labelText}
                             </label>
                         </div>
                     `;
                     break;
                     
                 case 'radio':
+                    labelText = `Radio-Buttons ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label>Radio-Buttons ${fieldCounter}</label>
+                            <label>${labelText}</label>
                             <div>
                                 <label>
                                     <input type="radio" name="${fieldId}-radio" value="option1">
@@ -288,35 +318,41 @@
                     break;
                     
                 case 'date':
+                    labelText = `Datum ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-date">Datum ${fieldCounter}</label>
+                            <label for="${fieldId}-date">${labelText}</label>
                             <input type="date" id="${fieldId}-date">
                         </div>
                     `;
                     break;
                     
                 case 'number':
+                    labelText = `Zahl ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-number">Zahl ${fieldCounter}</label>
+                            <label for="${fieldId}-number">${labelText}</label>
                             <input type="number" id="${fieldId}-number" placeholder="Geben Sie eine Zahl ein">
                         </div>
                     `;
                     break;
                     
                 case 'email':
+                    labelText = `E-Mail ${fieldCounter}`;
                     fieldHtml = `
                         <div class="form-field" id="${fieldId}">
                             <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
-                            <label for="${fieldId}-email">E-Mail ${fieldCounter}</label>
+                            <label for="${fieldId}-email">${labelText}</label>
                             <input type="email" id="${fieldId}-email" placeholder="Geben Sie eine E-Mail-Adresse ein">
                         </div>
                     `;
                     break;
             }
+            
+            // Speichere das Label für die HTML-Ausgabe
+            fieldLabels[fieldId] = labelText;
             
             document.getElementById('form-preview').innerHTML += fieldHtml;
         }
@@ -325,10 +361,12 @@
             const field = document.getElementById(fieldId);
             if (field) {
                 field.remove();
+                // Entferne auch das Label aus der Speicherung
+                delete fieldLabels[fieldId];
             }
         }
         
-        function exportToJSON() {
+        function collectFormData() {
             const formData = {};
             const fields = document.querySelectorAll('.form-field');
             
@@ -338,25 +376,41 @@
                 // Textfeld
                 const textInput = field.querySelector('input[type="text"]');
                 if (textInput) {
-                    formData[fieldId] = textInput.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: textInput.value || '',
+                        type: 'text'
+                    };
                 }
                 
                 // Textbereich
                 const textarea = field.querySelector('textarea');
                 if (textarea) {
-                    formData[fieldId] = textarea.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: textarea.value || '',
+                        type: 'textarea'
+                    };
                 }
                 
                 // Dropdown
                 const select = field.querySelector('select');
                 if (select) {
-                    formData[fieldId] = select.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: select.value || '',
+                        type: 'select'
+                    };
                 }
                 
                 // Checkbox
                 const checkbox = field.querySelector('input[type="checkbox"]');
                 if (checkbox) {
-                    formData[fieldId] = checkbox.checked;
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: checkbox.checked,
+                        type: 'checkbox'
+                    };
                 }
                 
                 // Radio-Buttons
@@ -368,31 +422,178 @@
                             selectedValue = radio.value;
                         }
                     });
-                    formData[fieldId] = selectedValue;
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: selectedValue,
+                        type: 'radio'
+                    };
                 }
                 
                 // Datum
                 const dateInput = field.querySelector('input[type="date"]');
                 if (dateInput) {
-                    formData[fieldId] = dateInput.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: dateInput.value || '',
+                        type: 'date'
+                    };
                 }
                 
                 // Zahl
                 const numberInput = field.querySelector('input[type="number"]');
                 if (numberInput) {
-                    formData[fieldId] = numberInput.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: numberInput.value || '',
+                        type: 'number'
+                    };
                 }
                 
                 // E-Mail
                 const emailInput = field.querySelector('input[type="email"]');
                 if (emailInput) {
-                    formData[fieldId] = emailInput.value || '';
+                    formData[fieldId] = {
+                        label: fieldLabels[fieldId],
+                        value: emailInput.value || '',
+                        type: 'email'
+                    };
                 }
             });
             
-            const jsonOutput = document.getElementById('json-output');
-            jsonOutput.textContent = JSON.stringify(formData, null, 2);
-            jsonOutput.style.display = 'block';
+            return formData;
+        }
+        
+        
+        function exportToHTML() {
+            const formData = collectFormData();
+            
+            // HTML-Seite erstellen
+            let htmlContent = `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular-Daten</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .data-item {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .data-value {
+            color: #34495e;
+        }
+        .empty-value {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formular-Daten</h1>
+    <p>Diese Seite wurde automatisch mit den eingegebenen Formulardaten erstellt.</p>
+`;
+            
+            // Daten in HTML einfügen
+            for (const fieldId in formData) {
+                const field = formData[fieldId];
+                let displayValue = field.value;
+                
+                if (field.value === '' || field.value === false) {
+                    displayValue = '<span class="empty-value">(Keine Eingabe)</span>';
+                } else if (field.type === 'checkbox') {
+                    displayValue = field.value ? 'Ja' : 'Nein';
+                }
+                
+                htmlContent += `
+    <div class="data-item">
+        <div class="data-label">${field.label}</div>
+        <div class="data-value">${displayValue}</div>
+    </div>
+`;
+            }
+            
+            htmlContent += `
+    <div class="footer">
+        Erstellt am ${new Date().toLocaleString('de-DE')}
+    </div>
+    <script>
+            function exportToJSON() {
+                const formData = collectFormData();
+                const jsonString = JSON.stringify(formData, null, 2);
+                
+                // JSON-Datei erstellen und zum Download anbieten
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'formulardaten.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Erfolgsmeldung anzeigen
+                showSuccessMessage('JSON-Datei wurde erfolgreich erstellt und heruntergeladen!');
+                
+                // JSON im Vorschaufenster anzeigen
+                const jsonOutput = document.getElementById('json-output');
+                jsonOutput.textContent = jsonString;
+                jsonOutput.style.display = 'block';
+        }
+    </script>
+</body>
+</html>`;
+            
+            // HTML-Datei erstellen und zum Download anbieten
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'formulardaten.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Erfolgsmeldung anzeigen
+            showSuccessMessage('HTML-Datei wurde erfolgreich erstellt und heruntergeladen!');
+        }
+        
+        function showSuccessMessage(message) {
+            const successMessage = document.getElementById('success-message');
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
