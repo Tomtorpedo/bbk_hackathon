@@ -1,12 +1,226 @@
 <!DOCTYPE html>
-<html lang="de-DE">
-    <head >
-        <title>HTML Formular Ersteller</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <h1 class="title">etwas</h1>
-    </body>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lokaler Formular-Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
 
+    header {
+      background: #0077cc;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
 
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1em;
+      gap: 1em;
+    }
+
+    #builder, #preview {
+      background: white;
+      padding: 1em;
+      border-radius: 8px;
+      flex: 1 1 45%;
+      min-width: 300px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      border-bottom: 2px solid #0077cc;
+      padding-bottom: 0.3em;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+
+    input, select, button {
+      margin-top: 0.3em;
+      padding: 0.4em;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #form-preview {
+      margin-top: 1em;
+      border: 1px dashed #ccc;
+      padding: 1em;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+
+    button.add-field {
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+
+    button.add-field:hover {
+      background: #005fa3;
+    }
+
+    .field-item {
+      border-bottom: 1px solid #ddd;
+      padding: 0.5em 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧩 Lokaler Formular-Builder</h1>
+  </header>
+
+  <main>
+    <section id="builder">
+      <h2>Feld hinzufügen</h2>
+      <label for="field-label">Label:</label>
+      <input type="text" id="field-label" placeholder="z. B. Name">
+
+      <label for="field-type">Feldtyp:</label>
+      <select id="field-type">
+        <option value="text">Textfeld</option>
+        <option value="email">E-Mail</option>
+        <option value="number">Zahl</option>
+        <option value="textarea">Mehrzeiliges Textfeld</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="radio">Radio-Button</option>
+        <option value="select">Dropdown</option>
+      </select>
+
+      <label for="field-options">Optionen (durch Komma getrennt, nur für Dropdown/Radio):</label>
+      <input type="text" id="field-options" placeholder="z. B. Rot,Grün,Blau">
+
+      <button class="add-field" id="add-field-btn">Feld hinzufügen</button>
+
+      <h3>Aktuelle Felder:</h3>
+      <div id="field-list"></div>
+    </section>
+
+    <section id="preview">
+      <h2>Vorschau</h2>
+      <form id="form-preview"></form>
+    </section>
+  </main>
+
+  <footer>
+    Lokaler Formular-Builder – funktioniert komplett offline ✨
+  </footer>
+
+  <script>
+    const fieldList = document.getElementById('field-list');
+    const formPreview = document.getElementById('form-preview');
+    const addFieldBtn = document.getElementById('add-field-btn');
+
+    const fields = [];
+
+    addFieldBtn.addEventListener('click', () => {
+      const label = document.getElementById('field-label').value.trim();
+      const type = document.getElementById('field-type').value;
+      const options = document.getElementById('field-options').value.split(',').map(o => o.trim()).filter(o => o);
+
+      if (!label) {
+        alert('Bitte ein Label eingeben.');
+        return;
+      }
+
+      fields.push({ label, type, options });
+      renderFields();
+      renderPreview();
+
+      // Eingabefelder zurücksetzen
+      document.getElementById('field-label').value = '';
+      document.getElementById('field-options').value = '';
+    });
+
+    function renderFields() {
+      fieldList.innerHTML = '';
+      fields.forEach((f, i) => {
+        const div = document.createElement('div');
+        div.className = 'field-item';
+        div.innerHTML = `<strong>${f.label}</strong> (${f.type}) 
+          <button onclick="removeField(${i})">❌ Entfernen</button>`;
+        fieldList.appendChild(div);
+      });
+    }
+
+    function removeField(index) {
+      fields.splice(index, 1);
+      renderFields();
+      renderPreview();
+    }
+
+    function renderPreview() {
+      formPreview.innerHTML = '';
+      fields.forEach(f => {
+        const wrapper = document.createElement('div');
+        wrapper.style.marginBottom = '1em';
+        const label = document.createElement('label');
+        label.textContent = f.label;
+
+        wrapper.appendChild(label);
+
+        let input;
+        switch (f.type) {
+          case 'textarea':
+            input = document.createElement('textarea');
+            break;
+          case 'select':
+            input = document.createElement('select');
+            f.options.forEach(opt => {
+              const o = document.createElement('option');
+              o.textContent = opt;
+              input.appendChild(o);
+            });
+            break;
+          case 'radio':
+            input = document.createElement('div');
+            f.options.forEach(opt => {
+              const radio = document.createElement('input');
+              radio.type = 'radio';
+              radio.name = f.label;
+              radio.value = opt;
+              const lbl = document.createElement('label');
+              lbl.textContent = opt;
+              lbl.style.marginRight = '1em';
+              lbl.prepend(radio);
+              input.appendChild(lbl);
+            });
+            break;
+          case 'checkbox':
+            input = document.createElement('input');
+            input.type = 'checkbox';
+            break;
+          default:
+            input = document.createElement('input');
+            input.type = f.type;
+        }
+
+        wrapper.appendChild(input);
+        formPreview.appendChild(wrapper);
+      });
+    }
+
+    window.removeField = removeField;
+  </script>
+</body>
 </html>
