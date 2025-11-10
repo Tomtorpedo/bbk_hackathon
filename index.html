@@ -1,15 +1,399 @@
 <!DOCTYPE html>
-<html lang="de-DE">
-    <head >
-        <title>HTML Formular Ersteller</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <h1 class="title">etwas</h1>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamisches Formular mit JSON-Export</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        h1, h2 {
+            color: #2c3e50;
+        }
+        
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .form-builder {
+            background-color: #e8f4fd;
+        }
+        
+        .form-preview {
+            background-color: #f0f8f0;
+        }
+        
+        .field-type {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .field-type button {
+            margin-left: auto;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .field-type button:hover {
+            background: #2980b9;
+        }
+        
+        .form-field {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-field input, .form-field textarea, .form-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+        
+        .export-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .export-btn:hover {
+            background: #219653;
+        }
+        
+        .json-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamisches Formular mit JSON-Export</h1>
+    
+    <div class="container">
+        <div class="panel form-builder">
+            <h2>Feldtypen hinzufügen</h2>
+            <div class="field-type">
+                <span>Textfeld (einzeilig)</span>
+                <button type="button" onclick="addField('text')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Textbereich (mehrzeilig)</span>
+                <button type="button" onclick="addField('textarea')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Auswahlfeld (Dropdown)</span>
+                <button type="button" onclick="addField('select')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Checkbox</span>
+                <button type="button" onclick="addField('checkbox')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Radio-Buttons</span>
+                <button type="button" onclick="addField('radio')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Datum</span>
+                <button type="button" onclick="addField('date')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>Zahl</span>
+                <button type="button" onclick="addField('number')">Hinzufügen</button>
+            </div>
+            <div class="field-type">
+                <span>E-Mail</span>
+                <button type="button" onclick="addField('email')">Hinzufügen</button>
+            </div>
+        </div>
 
+        <div class="panel form-preview">
+            <h2>Formular-Vorschau</h2>
+            <div id="form-preview">
+                <p>Fügen Sie Felder hinzu, um Ihr Formular zu erstellen.</p>
+            </div>
+            
+            <button type="button" class="export-btn" onclick="exportToJSON()">Als JSON exportieren</button>
+            
+            <div id="json-output" class="json-output" style="display: none;">
+                <!-- Hier wird der JSON-Code angezeigt -->
+            </div>
+        </div>
+    </div>
 
-        <button type="button" onclick="window.print()">Seite Als PDF exportieren</button>
-    </body>
-
-
+    <script>
+        let fieldCounter = 0;
+        
+        function addField(type) {
+            fieldCounter++;
+            const fieldId = `field-${fieldCounter}`;
+            let fieldHtml = '';
+            
+            switch(type) {
+                case 'text':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-input">Textfeld ${fieldCounter}</label>
+                            <input type="text" id="${fieldId}-input" placeholder="Geben Sie Text ein">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'textarea':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-textarea">Textbereich ${fieldCounter}</label>
+                            <textarea id="${fieldId}-textarea" rows="4" placeholder="Geben Sie mehrzeiligen Text ein"></textarea>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'select':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-select">Auswahl ${fieldCounter}</label>
+                            <select id="${fieldId}-select">
+                                <option value="">Bitte wählen</option>
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'checkbox':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label>
+                                <input type="checkbox" id="${fieldId}-checkbox">
+                                Checkbox ${fieldCounter}
+                            </label>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'radio':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label>Radio-Buttons ${fieldCounter}</label>
+                            <div>
+                                <label>
+                                    <input type="radio" name="${fieldId}-radio" value="option1">
+                                    Option 1
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" name="${fieldId}-radio" value="option2">
+                                    Option 2
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" name="${fieldId}-radio" value="option3">
+                                    Option 3
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'date':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-date">Datum ${fieldCounter}</label>
+                            <input type="date" id="${fieldId}-date">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'number':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-number">Zahl ${fieldCounter}</label>
+                            <input type="number" id="${fieldId}-number" placeholder="Geben Sie eine Zahl ein">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'email':
+                    fieldHtml = `
+                        <div class="form-field" id="${fieldId}">
+                            <button class="remove-btn" onclick="removeField('${fieldId}')">×</button>
+                            <label for="${fieldId}-email">E-Mail ${fieldCounter}</label>
+                            <input type="email" id="${fieldId}-email" placeholder="Geben Sie eine E-Mail-Adresse ein">
+                        </div>
+                    `;
+                    break;
+            }
+            
+            document.getElementById('form-preview').innerHTML += fieldHtml;
+        }
+        
+        function removeField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.remove();
+            }
+        }
+        
+        function exportToJSON() {
+            const formData = {};
+            const fields = document.querySelectorAll('.form-field');
+            
+            fields.forEach(field => {
+                const fieldId = field.id;
+                
+                // Textfeld
+                const textInput = field.querySelector('input[type="text"]');
+                if (textInput) {
+                    formData[fieldId] = textInput.value || '';
+                }
+                
+                // Textbereich
+                const textarea = field.querySelector('textarea');
+                if (textarea) {
+                    formData[fieldId] = textarea.value || '';
+                }
+                
+                // Dropdown
+                const select = field.querySelector('select');
+                if (select) {
+                    formData[fieldId] = select.value || '';
+                }
+                
+                // Checkbox
+                const checkbox = field.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    formData[fieldId] = checkbox.checked;
+                }
+                
+                // Radio-Buttons
+                const radioButtons = field.querySelectorAll('input[type="radio"]');
+                if (radioButtons.length > 0) {
+                    let selectedValue = '';
+                    radioButtons.forEach(radio => {
+                        if (radio.checked) {
+                            selectedValue = radio.value;
+                        }
+                    });
+                    formData[fieldId] = selectedValue;
+                }
+                
+                // Datum
+                const dateInput = field.querySelector('input[type="date"]');
+                if (dateInput) {
+                    formData[fieldId] = dateInput.value || '';
+                }
+                
+                // Zahl
+                const numberInput = field.querySelector('input[type="number"]');
+                if (numberInput) {
+                    formData[fieldId] = numberInput.value || '';
+                }
+                
+                // E-Mail
+                const emailInput = field.querySelector('input[type="email"]');
+                if (emailInput) {
+                    formData[fieldId] = emailInput.value || '';
+                }
+            });
+            
+            const jsonOutput = document.getElementById('json-output');
+            jsonOutput.textContent = JSON.stringify(formData, null, 2);
+            jsonOutput.style.display = 'block';
+        }
+    </script>
+</body>
 </html>
