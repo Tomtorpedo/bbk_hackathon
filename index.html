@@ -31,7 +31,7 @@
             background-color: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 10px 1px #494949;
             margin-bottom: 20px;
         }
 
@@ -41,6 +41,17 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 5px 5px 10px 1px #494949;
+        }
+
+        .tool-header {
+            padding: 5px 30px;
+            display: grid;
+            grid-template-columns: 10% auto;
+        }
+
+        .tool-header-buttons {
+            text-align: right;
         }
 
         .tool-container {
@@ -60,7 +71,7 @@
             border-radius: 10px;
             background-color: rgba(255, 233, 233, 0.66);
             outline: 5px solid rgba(3, 121, 252, 0.69);
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .prev-container {
@@ -74,14 +85,14 @@
             border-radius: 10px;
             background-color: rgba(255, 233, 233, 0.66);
             outline: 5px solid rgba(3, 121, 252, 0.69);
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .prev-header {
             background-color: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 10px 1px #494949;
             margin-bottom: 20px;
             display: grid;
             grid-template-columns: 200px auto;
@@ -96,6 +107,7 @@
             margin: 5px;
             padding: 5px;
             border-radius: 10px;
+            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .Drag-and-Drop-Container {
@@ -105,6 +117,7 @@
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
+            box-shadow: 5px 5px 10px 1px #494949;
             border-radius: 10px;
         }
 
@@ -197,6 +210,7 @@
         
         .download-btn:hover {
             background-color: #0b7dda;
+            border: 2px inset #0b72c6;
         }
         
         /* Modal Styling */
@@ -263,8 +277,11 @@
         .header-btn {
             background-color: #4CAF50;
             color: white;
-            margin-bottom: 15px;
         }
+        .header-btn:hover {
+            background-color: #45a049;
+        }
+
         .add-option-btn {
             background-color: #4CAF50;
             color: white;
@@ -317,17 +334,20 @@
 </head>
 
 <header>
-    <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
+    <dev class="tool-header">
+        <dev class="tool-header-logo">LOGO</dev>
+        <dev class="tool-header-buttons">
+            <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
+        </dev>
+    </dev>
 </header>
 
 <body>
     <div class="tool-container">
         <div class="editor-container">
             <div class="options-contianer">
-                <div class="header-container-config" id="header-container-config">
-                    <button class="header-btn" id="header-btn" type="button">Header bearbeiten</button>
-                </div>
                 <div class="action-buttons">
+                    <button class="btn header-btn" id="header-btn" type="button">Header bearbeiten</button>
                     <button class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
 
                 </div>
