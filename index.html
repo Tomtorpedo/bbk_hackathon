@@ -288,6 +288,7 @@
         let elementCount = 0;
         let currentEditElement = null;
         let newlyAddedElement = null;
+        let elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0}
         
         // DOM-Elemente
         const formContainer = document.getElementById('form-container');
@@ -371,27 +372,35 @@
             switch(elementType) {
                 case 'text':
                     elementHTML = createTextElement(elementId);
+                    elementTypeCount.text++;
                     break;
                 case 'textarea':
                     elementHTML = createTextareaElement(elementId);
+                    elementTypeCount.textarea++;
                     break;
                 case 'email':
                     elementHTML = createEmailElement(elementId);
+                    elementTypeCount.email++;
                     break;
                 case 'number':
                     elementHTML = createNumberElement(elementId);
+                    elementTypeCount.number++;
                     break;
                 case 'date':
                     elementHTML = createDateElement(elementId);
+                    elementTypeCount.date++;
                     break;
                 case 'dropdown':
                     elementHTML = createDropdownElement(elementId);
+                    elementTypeCount.dropdown++;
                     break;
                 case 'radio':
                     elementHTML = createRadioElement(elementId);
+                    elementTypeCount.radio++;
                     break;
                 case 'checkbox':
                     elementHTML = createCheckboxElement(elementId);
+                    elementTypeCount.checkbox++;
                     break;
             }
             
