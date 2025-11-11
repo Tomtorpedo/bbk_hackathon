@@ -717,30 +717,31 @@
             const headerText = headerTextInput.value;
 
             // Nur PNG zulassen
-            if (!file || file.type !== "image/png") {
-                alert("Nur PNG-Dateien erlaubt!");
-                return;
+
+            if (file && file.type === "image/png"){
+                pngToBase64(file, function(base64String) {
+                    if (base64String) {
+                        // Logo als src setzen
+                        document.getElementById("header-img").src = base64String;
+                        // Optional: Variable speichern (falls benötigt)
+                        window.headerLogoNew = base64String;
+                    } else {
+                        alert("Fehler beim Verarbeiten des Bildes!");
+                    }
+                    });
+            }
+            else if (file && file.type !== "image/png"){
+                alert("Nur PNGs Erlaubt!");
             }
 
-            pngToBase64(file, function(base64String) {
-                if (base64String) {
-                    // Logo als src setzen
-                    document.getElementById("header-img").src = base64String;
-                    // Optional: Variable speichern (falls benötigt)
-                    window.headerLogoNew = base64String;
+            // Headertext aktualisieren
+            document.querySelector(".header-text").textContent = headerText;
 
-                    // Headertext aktualisieren
-                    document.querySelector(".header-text").textContent = headerText;
+            // header text speichern
+            window.headertextnew = headerText;
+            // Modal schließen
+            document.getElementById("header-modal").style.display = "none";
 
-                    // header text speichern
-                    window.headertextnew = headerText;
-
-                    // Modal schließen
-                    document.getElementById("header-modal").style.display = "none";
-                } else {
-                    alert("Fehler beim Verarbeiten des Bildes!");
-                }
-            });
         }
 
         // Asynchrone Funktion mit Callback!
