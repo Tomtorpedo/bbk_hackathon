@@ -30,7 +30,31 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        
+
+        .header-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            column-count: 2;
+        }
+
+        .header-logo {
+            float: left;
+            width: 150px;
+            height: 150px;
+            margin-right: 15px;
+        }
+
+        .header-text {
+            float: left;
+            text-align: left;
+        }
+
         .form-element {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -175,14 +199,19 @@
             flex-grow: 1;
             margin-right: 8px;
         }
-        
-        .add-option-btn, .remove-option-btn {
+
+        .add-option-btn, .remove-option-btn, .header-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
+        .header-btn {
+            background-color: #4CAF50;
+            color: white;
+            margin-bottom: 15px;
+        }
         .add-option-btn {
             background-color: #4CAF50;
             color: white;
@@ -212,14 +241,9 @@
             background-color: #4CAF50;
             color: white;
         }
-
-        .confirm-btn:disabled {
-            background-color: #6a6a6a;
-            color: white;
-        }
         
         .cancel-btn {
-            background-color: #ff1100;
+            background-color: #f44336;
             color: white;
         }
         
@@ -233,6 +257,19 @@
         }
     </style>
 </head>
+
+<header>
+    <div class="header-container" id="header-container">
+        <div class="header-content">
+            <div class="header-logo"><img id="header-img" src="" alt="LOGO" width="150px" height="150px"></div>
+            <div class="header-text">- PlaceHolder -</div>
+        </div>
+    </div>
+    <div class="header-container-config" id="header-container-config">
+        <button class="header-btn" id="header-btn" type="button">Header bearbeiten</button>
+    </div>
+</header>
+
 <body>
     <h1>Formular-Editor</h1>
     
@@ -244,7 +281,23 @@
         <button class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
         <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
     </div>
-    
+
+    <!-- Modal für Header Edit -->
+    <div class="modal" id="header-modal">
+        <div class="modal-content">
+            <h2>Logo hochladen</h2>
+            <input type="file" id="header-logo-input" accept="image/png" required>
+            <h2>Header Text</h2>
+            <input type="text" name="headertext" placeholder="headertext" size="30" required>
+
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" id="header-cancel-btn">Abbrechen</button>
+                <button class="modal-btn confirm-btn" id="header-confirm-btn">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal für Elementtyp-Auswahl -->
     <div class="modal" id="element-modal">
         <div class="modal-content">
@@ -296,6 +349,7 @@
         let elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0}
         
         // DOM-Elemente
+        const headerModal = document.getElementById('header-modal');
         const formContainer = document.getElementById('form-container');
         const addElementBtn = document.getElementById('add-element-btn');
         const downloadBtn = document.getElementById('download-btn');
@@ -310,18 +364,31 @@
         const editOptionsContainer = document.getElementById('edit-options-container');
         const editOptionsList = document.getElementById('edit-options-list');
         const addOptionBtn = document.getElementById('add-option-btn');
-        
+        const headerBtn = document.getElementById('header-btn');
+        const headerConfirmBtn = document.getElementById('header-confirm-btn');
+        const headerCancelBtn = document.getElementById('header-cancel-btn');
+
         // Event-Listener
         addElementBtn.addEventListener('click', openElementModal);
         cancelBtn.addEventListener('click', closeElementModal);
         confirmBtn.addEventListener('click', addFormElement);
         downloadBtn.addEventListener('click', downloadForm);
         editCancelBtn.addEventListener('click', closeEditModal);
-        editLabelInput.addEventListener('input', validChange);
         editConfirmBtn.addEventListener('click', saveElementEdit);
         addOptionBtn.addEventListener('click', addOption);
+        headerBtn.addEventListener('click', openHeaderModal);
+        headerCancelBtn.addEventListener('click', closeHeaderModal);
+        headerConfirmBtn.addEventListener('click', saveHeaderEdit);
         
         // Modal-Funktionen
+        function openHeaderModal() {
+            headerModal.style.display = 'block';
+        }
+
+        function closeHeaderModal() {
+            headerModal.style.display = 'none';
+        }
+
         function openElementModal() {
             elementModal.style.display = 'block';
         }
@@ -423,77 +490,76 @@
         }
         
         // Element-Typen erstellen
-        function createTextElement(id) 
-        {
+        function createTextElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="text">
-                    <label>Textfeld-${elementTypeCount.text}:</label>
+                    <label>Textfeld:</label>
                     <input type="text" name="${id}" placeholder="Text eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createTextareaElement(id) 
-        {
+        function createTextareaElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="textarea">
-                    <label>Textbereich-${elementTypeCount.textarea}:</label>
+                    <label>Textbereich:</label>
                     <textarea name="${id}" rows="4" placeholder="Längeren Text eingeben"></textarea>
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createEmailElement(id) 
-        {
+        function createEmailElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="email">
-                    <label>E-Mail-${elementTypeCount.email}:</label>
+                    <label>E-Mail:</label>
                     <input type="email" name="${id}" placeholder="E-Mail-Adresse eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createNumberElement(id) 
-        {
+        function createNumberElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="number">
-                    <label>Zahl-${elementTypeCount.number}:</label>
+                    <label>Zahl:</label>
                     <input type="number" name="${id}" placeholder="Zahl eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createDateElement(id) 
-        {
+        function createDateElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="date">
-                    <label>Datum-${elementTypeCount.date}:</label>
+                    <label>Datum:</label>
                     <input type="date" name="${id}">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createDropdownElement(id)
-        {
+        function createDropdownElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="dropdown" data-options='${JSON.stringify(options)}'>
-                    <label>Dropdown-${elementTypeCount.dropdown}:</label>
+                    <label>Dropdown:</label>
                     <select name="${id}">
                         <option value="">Bitte auswählen</option>
                         ${options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('')}
@@ -502,15 +568,15 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createRadioElement(id) 
-        {
+        function createRadioElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
-                    <label>Radio-Buttons-${elementTypeCount.radio}:</label>
+                    <label>Radio-Buttons:</label>
                     <div class="radio-group">
                         ${options.map((option, index) => `
                             <label><input type="radio" name="${id}" value="option${index+1}"> ${option}</label>
@@ -520,15 +586,15 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
-        function createCheckboxElement(id) 
-        {
+        function createCheckboxElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
-                    <label>Checkboxen-${elementTypeCount.checkbox}:</label>
+                    <label>Checkboxen:</label>
                     <div class="checkbox-group">
                         ${options.map((option, index) => `
                             <label><input type="checkbox" name="${id}" value="option${index+1}"> ${option}</label>
@@ -538,7 +604,8 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
         
         // Element löschen
@@ -563,27 +630,6 @@
                 <button type="button" class="remove-option-btn" onclick="this.parentElement.remove()">Entfernen</button>
             `;
             editOptionsList.appendChild(optionItem);
-        }
-
-        function validChange() {
-            const newLabel = editLabelInput.value;
-            const formElements = formContainer.querySelectorAll('.form-element');
-            let validLabel = true
-            formElements.forEach(isUsed); 
-            if (validLabel===false){
-                console.log("alarm")
-                document.getElementById("edit-confirm-btn").disabled = true;
-            } else {
-                    console.log("test");
-                    document.getElementById("edit-confirm-btn").disabled = false;
-                }
-            
-            function isUsed(element) {
-                const label = element.querySelector('label').textContent;
-                if ((label===newLabel+':')&&(element.id!=currentEditElement.id)) {validLabel=false
-                    return;
-                }
-            }
         }
         
         // Element-Bearbeitung speichern
@@ -627,59 +673,137 @@
             
             closeEditModal();
         }
-        
+
+        // Header Edit speichern
+
+        function saveHeaderEdit(){
+            const logoInput = document.getElementById("header-logo-input");
+            const headerTextInput = document.querySelector("input[name='headertext']");
+            const file = logoInput.files[0];
+            const headerText = headerTextInput.value;
+
+            // Nur PNG zulassen
+            if (!file || file.type !== "image/png") {
+                alert("Nur PNG-Dateien erlaubt!");
+                return;
+            }
+
+            pngToBase64(file, function(base64String) {
+                if (base64String) {
+                    // Logo als src setzen
+                    document.getElementById("header-img").src = base64String;
+                    // Optional: Variable speichern (falls benötigt)
+                    window.headerLogoNew = base64String;
+
+                    // Headertext aktualisieren
+                    document.querySelector(".header-text").textContent = headerText;
+
+                    // header text speichern
+                    window.headertextnew = headerText;
+
+                    // Modal schließen
+                    document.getElementById("header-modal").style.display = "none";
+                } else {
+                    alert("Fehler beim Verarbeiten des Bildes!");
+                }
+            });
+        }
+
+        // Asynchrone Funktion mit Callback!
+        function pngToBase64(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                callback(event.target.result);
+            };
+            reader.onerror = function() {
+                callback(null);
+            };
+            reader.readAsDataURL(file);
+        }
+
         // Formular als HTML herunterladen
         function downloadForm() {
             // Formular-HTML erstellen
             let formHTML = `
-                <!DOCTYPE html>
-                <html lang="de">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Erstelltes Formular</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            max-width: 600px;
-                            margin: 0 auto;
-                            padding: 20px;
-                        }
-                        .form-element {
-                            margin-bottom: 15px;
-                        }
-                        label {
-                            display: block;
-                            margin-bottom: 5px;
-                            font-weight: bold;
-                        }
-                        input, textarea, select {
-                            width: 100%;
-                            padding: 8px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                        }
-                        .radio-group label, .checkbox-group label {
-                            display: block;
-                            margin-bottom: 5px;
-                            font-weight: normal;
-                        }
-                        .submit-btn {
-                            background-color: #4CAF50;
-                            color: white;
-                            padding: 10px 15px;
-                            border: none;
-                            border-radius: 4px;
-                            cursor: pointer;
-                            font-weight: bold;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Formular</h1>
-                    <form id="generated-form">
-                </body>
-                </html>`;
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erstelltes Formular</title>
+    <style>
+        .header-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            column-count: 2;
+        }
+
+        .header-logo {
+            float: left;
+            width: 150px;
+            height: 150px;
+            margin-right: 15px;
+        }
+
+        .header-text {
+            float: left;
+            text-align: left;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-element {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .radio-group label, .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<header>
+    <div class="header-container" id="header-container">
+        <div class="header-content">
+            <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
+            <div class="header-text">${window.headertextnew}</div>
+        </div>
+    </div>
+</header>
+<body>
+    <h1>Formular</h1>
+    <form id="generated-form">
+`;
             
             // Alle Formularelemente durchgehen
             const formElements = formContainer.querySelectorAll('.form-element');
@@ -710,10 +834,12 @@
             
             // Submit-Button hinzufügen
             formHTML += `
-                <div class="form-element">
-                <button type="submit" class="submit-btn">Absenden</button>
-                        </div>
-                    </form>`;
+<div class="form-element">
+<button type="submit" class="submit-btn">Absenden</button>
+        </div>
+    </form>
+
+`;
             
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
