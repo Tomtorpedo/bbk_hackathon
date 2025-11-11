@@ -219,7 +219,7 @@
         }
         
         .cancel-btn {
-            background-color: #f44336;
+            background-color: #ff1100;
             color: white;
         }
         
@@ -423,7 +423,8 @@
         }
         
         // Element-Typen erstellen
-        function createTextElement(id) {
+        function createTextElement(id) 
+        {
             return `
                 <div class="form-element" id="${id}" data-type="text">
                     <label>Textfeld-${elementTypeCount.text}:</label>
@@ -432,11 +433,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createTextareaElement(id) {
+        function createTextareaElement(id) 
+        {
             return `
                 <div class="form-element" id="${id}" data-type="textarea">
                     <label>Textbereich-${elementTypeCount.textarea}:</label>
@@ -445,11 +446,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createEmailElement(id) {
+        function createEmailElement(id) 
+        {
             return `
                 <div class="form-element" id="${id}" data-type="email">
                     <label>E-Mail-${elementTypeCount.email}:</label>
@@ -458,11 +459,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createNumberElement(id) {
+        function createNumberElement(id) 
+        {
             return `
                 <div class="form-element" id="${id}" data-type="number">
                     <label>Zahl-${elementTypeCount.number}:</label>
@@ -471,11 +472,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createDateElement(id) {
+        function createDateElement(id) 
+        {
             return `
                 <div class="form-element" id="${id}" data-type="date">
                     <label>Datum-${elementTypeCount.date}:</label>
@@ -484,11 +485,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createDropdownElement(id) {
+        function createDropdownElement(id)
+        {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="dropdown" data-options='${JSON.stringify(options)}'>
@@ -501,11 +502,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createRadioElement(id) {
+        function createRadioElement(id) 
+        {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
@@ -519,11 +520,11 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
-        function createCheckboxElement(id) {
+        function createCheckboxElement(id) 
+        {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
@@ -537,8 +538,7 @@
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                         <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         
         // Element löschen
@@ -632,53 +632,54 @@
         function downloadForm() {
             // Formular-HTML erstellen
             let formHTML = `
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erstelltes Formular</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-element {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .radio-group label, .checkbox-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Formular</h1>
-    <form id="generated-form">
-`;
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Erstelltes Formular</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .form-element {
+                            margin-bottom: 15px;
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                        }
+                        input, textarea, select {
+                            width: 100%;
+                            padding: 8px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        .radio-group label, .checkbox-group label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: normal;
+                        }
+                        .submit-btn {
+                            background-color: #4CAF50;
+                            color: white;
+                            padding: 10px 15px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Formular</h1>
+                    <form id="generated-form">
+                </body>
+                </html>`;
             
             // Alle Formularelemente durchgehen
             const formElements = formContainer.querySelectorAll('.form-element');
@@ -709,12 +710,10 @@
             
             // Submit-Button hinzufügen
             formHTML += `
-<div class="form-element">
-<button type="submit" class="submit-btn">Absenden</button>
-        </div>
-    </form>
-
-`;
+                <div class="form-element">
+                <button type="submit" class="submit-btn">Absenden</button>
+                        </div>
+                    </form>`;
             
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
