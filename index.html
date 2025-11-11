@@ -212,6 +212,11 @@
             background-color: #4CAF50;
             color: white;
         }
+
+        .confirm-btn:disabled {
+            background-color: #6a6a6a;
+            color: white;
+        }
         
         .cancel-btn {
             background-color: #f44336;
@@ -312,6 +317,7 @@
         confirmBtn.addEventListener('click', addFormElement);
         downloadBtn.addEventListener('click', downloadForm);
         editCancelBtn.addEventListener('click', closeEditModal);
+        editLabelInput.addEventListener('input', validChange);
         editConfirmBtn.addEventListener('click', saveElementEdit);
         addOptionBtn.addEventListener('click', addOption);
         
@@ -420,7 +426,7 @@
         function createTextElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="text">
-                    <label>Textfeld:</label>
+                    <label>Textfeld-${elementTypeCount.text}:</label>
                     <input type="text" name="${id}" placeholder="Text eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
@@ -433,7 +439,7 @@
         function createTextareaElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="textarea">
-                    <label>Textbereich:</label>
+                    <label>Textbereich-${elementTypeCount.textarea}:</label>
                     <textarea name="${id}" rows="4" placeholder="Längeren Text eingeben"></textarea>
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
@@ -446,7 +452,7 @@
         function createEmailElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="email">
-                    <label>E-Mail:</label>
+                    <label>E-Mail-${elementTypeCount.email}:</label>
                     <input type="email" name="${id}" placeholder="E-Mail-Adresse eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
@@ -459,7 +465,7 @@
         function createNumberElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="number">
-                    <label>Zahl:</label>
+                    <label>Zahl-${elementTypeCount.number}:</label>
                     <input type="number" name="${id}" placeholder="Zahl eingeben">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
@@ -472,7 +478,7 @@
         function createDateElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="date">
-                    <label>Datum:</label>
+                    <label>Datum-${elementTypeCount.date}:</label>
                     <input type="date" name="${id}">
                     <div class="element-actions">
                         <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
@@ -486,7 +492,7 @@
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="dropdown" data-options='${JSON.stringify(options)}'>
-                    <label>Dropdown:</label>
+                    <label>Dropdown-${elementTypeCount.dropdown}:</label>
                     <select name="${id}">
                         <option value="">Bitte auswählen</option>
                         ${options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('')}
@@ -503,7 +509,7 @@
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
-                    <label>Radio-Buttons:</label>
+                    <label>Radio-Buttons-${elementTypeCount.radio}:</label>
                     <div class="radio-group">
                         ${options.map((option, index) => `
                             <label><input type="radio" name="${id}" value="option${index+1}"> ${option}</label>
@@ -521,7 +527,7 @@
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
                 <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
-                    <label>Checkboxen:</label>
+                    <label>Checkboxen-${elementTypeCount.checkbox}:</label>
                     <div class="checkbox-group">
                         ${options.map((option, index) => `
                             <label><input type="checkbox" name="${id}" value="option${index+1}"> ${option}</label>
@@ -557,6 +563,27 @@
                 <button type="button" class="remove-option-btn" onclick="this.parentElement.remove()">Entfernen</button>
             `;
             editOptionsList.appendChild(optionItem);
+        }
+
+        function validChange() {
+            const newLabel = editLabelInput.value;
+            const formElements = formContainer.querySelectorAll('.form-element');
+            let validLabel = true
+            formElements.forEach(isUsed); 
+            if (validLabel===false){
+                console.log("alarm")
+                document.getElementById("edit-confirm-btn").disabled = true;
+            } else {
+                    console.log("test");
+                    document.getElementById("edit-confirm-btn").disabled = false;
+                }
+            
+            function isUsed(element) {
+                const label = element.querySelector('label').textContent;
+                if ((label===newLabel+':')&&(element.id!=currentEditElement.id)) {validLabel=false
+                    return;
+                }
+            }
         }
         
         // Element-Bearbeitung speichern
