@@ -44,7 +44,6 @@
         }
 
         .tool-container {
-            background-color: #F00000;
             height: calc(100vh - 50px);
             margin-bottom: 15px;
         }
@@ -52,21 +51,30 @@
         .editor-container {
             position: fixed;
             left: 0;
-            top: 50px;
+            top: 70px;
             width: 340px;
-            height: calc(100vh - 50px);
+            height: calc(100vh - 70px);
             display: flex;
             flex-direction: column;
-            background: green;
             z-index: 1100;
+            border-radius: 10px;
+            background-color: rgba(255, 233, 233, 0.66);
+            outline: 5px solid rgba(3, 121, 252, 0.69);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .prev-container {
-            margin-left: 340px; /* mindestens Editor-Breite! */
-            background-color: yellow;
-            height: calc(100vh - 50px);
+            margin-left: 370px; /* mindestens Editor-Breite! */
+            margin-right: 30px;
+            margin-top: 20px;
+            padding: 5px;
+            height: calc(100vh - 70px);
             overflow-y: auto;
             z-index: 1200;
+            border-radius: 10px;
+            background-color: rgba(255, 233, 233, 0.66);
+            outline: 5px solid rgba(3, 121, 252, 0.69);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .prev-header {
@@ -76,18 +84,18 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             display: grid;
-            grid-template-columns: auto auto;
+            grid-template-columns: 200px auto;
         }
-        .prev-header-content {
-            background-color: #f00000;
-        }
-        .prev-header-text {
 
+        .prev-header-content {
+            text-align: center;
         }
+
         .options-contianer {
-            background-color: #F00000;
+            background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
             padding: 5px;
+            border-radius: 10px;
         }
 
         .Drag-and-Drop-Container {
@@ -96,7 +104,8 @@
             min-height: 0;            /* Wichtig für Flexbox+Scrollbar! */
             margin: 15px 5px 5px 5px;
             padding: 5px;
-            background: #F00000;
+            background-color: rgba(204, 204, 204, 0.6);
+            border-radius: 10px;
         }
 
         .form-element {
@@ -308,8 +317,7 @@
 </head>
 
 <header>
-
-
+    <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
 </header>
 
 <body>
@@ -321,7 +329,7 @@
                 </div>
                 <div class="action-buttons">
                     <button class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
-                    <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
+
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
@@ -339,8 +347,6 @@
             </div>
 
             <div class="prev-body">
-                <h1>Formular-Editor</h1>
-
                 <div class="form-container" id="form-container">
                     <!-- Formularelemente werden hier dynamisch hinzugefügt -->
                 </div>
