@@ -43,7 +43,7 @@
             column-count: 2;
         }
 
-        .header-sub{
+        .header-sub-text{
             text-align: center;
         }
 
@@ -273,7 +273,7 @@
             <div class="header-logo"><img id="header-img" src="" alt="LOGO" width="150px" height="150px"></div>
             <div class="header-text">- PlaceHolder -</div>
         </div>
-        <div class="header-sub">
+        <div class="header-sub-text">
             - SUB PLACEHOLDER -
         </div>
     </div>
@@ -301,6 +301,8 @@
             <input type="file" id="header-logo-input" accept="image/png" required>
             <h2>Header Text</h2>
             <input type="text" name="headertext" placeholder="headertext" size="30" required>
+            <h2>Sub Text</h2>
+            <input type="text" name="headersubtext" placeholder="subtext" size="30" required>
 
             <div class="modal-buttons">
                 <button class="modal-btn cancel-btn" id="header-cancel-btn">Abbrechen</button>
@@ -715,32 +717,42 @@
             const headerTextInput = document.querySelector("input[name='headertext']");
             const file = logoInput.files[0];
             const headerText = headerTextInput.value;
+            const headerSubTextInput = document.querySelector("input[name='headersubtext']");
+            const headerSubText = headerSubTextInput.value;
 
             // Nur PNG zulassen
-            if (!file || file.type !== "image/png") {
-                alert("Nur PNG-Dateien erlaubt!");
-                return;
+
+            if (file && file.type === "image/png"){
+                pngToBase64(file, function(base64String) {
+                    if (base64String) {
+                        // Logo als src setzen
+                        document.getElementById("header-img").src = base64String;
+                        // Optional: Variable speichern (falls benötigt)
+                        window.headerLogoNew = base64String;
+                    } else {
+                        alert("Fehler beim Verarbeiten des Bildes!");
+                    }
+                    });
+            }
+            else if (file && file.type !== "image/png"){
+                alert("Nur PNGs Erlaubt!");
+            }
+            if(headerText){
+                // Headertext aktualisieren
+                document.querySelector(".header-text").textContent = headerText;
+
+                // header text speichern
+                window.headertextnew = headerText;
+            }
+            if(headerSubText){
+                document.querySelector(".header-sub-text").textContent = headerSubText;
+
+                window.headerSubText = headerSubText;
             }
 
-            pngToBase64(file, function(base64String) {
-                if (base64String) {
-                    // Logo als src setzen
-                    document.getElementById("header-img").src = base64String;
-                    // Optional: Variable speichern (falls benötigt)
-                    window.headerLogoNew = base64String;
+            // Modal schließen
+            document.getElementById("header-modal").style.display = "none";
 
-                    // Headertext aktualisieren
-                    document.querySelector(".header-text").textContent = headerText;
-
-                    // header text speichern
-                    window.headertextnew = headerText;
-
-                    // Modal schließen
-                    document.getElementById("header-modal").style.display = "none";
-                } else {
-                    alert("Fehler beim Verarbeiten des Bildes!");
-                }
-            });
         }
 
         // Asynchrone Funktion mit Callback!
@@ -777,6 +789,10 @@
 
         .header-content {
             column-count: 2;
+        }
+
+        .header-sub-text{
+            text-align: center;
         }
 
         .header-logo {
@@ -832,6 +848,7 @@
         <div class="header-content">
             <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
             <div class="header-text">${window.headertextnew}</div>
+            <div class="header-sub-text">${window.headerSubText}</div>
         </div>
     </div>
 </header>
