@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erstelltes Formular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-element {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .radio-group label, .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formular</h1>
+    <form id="generated-form">
+
+        <div class="form-element">
+            <label>Textfeld-0:</label>
+            <input type="text" name="element-0" placeholder="Text eingeben">
+        </div>
+        <div class="form-element">
+            <label>Textbereich-0:</label>
+            <textarea name="element-1" rows="4" placeholder="Längeren Text eingeben"></textarea>
+        </div>
+        <div class="form-element">
+            <label>E-Mail-0:</label>
+            <input type="email" name="element-2" placeholder="E-Mail-Adresse eingeben">
+        </div>
+        <div class="form-element">
+            <label>Zahl-0:</label>
+        <input type="number" name="element-3" placeholder="Zahl eingeben">
+        </div>
+        <div class="form-element">
+            <label>Datum-0:</label>
+            <input type="date" name="element-4">
+        </div>
+        <div class="form-element">
+            <label>Dropdown-0:</label>
+            <select name="element-5"><option value="">Bitte auswählen</option><option value="option1">Option 1</option><option value="option2">Option 2</option><option value="option3">Option 3</option></select>
+        </div>
+        <div class="form-element">
+            <label>Radio-Buttons-0:</label>
+            <div class="radio-group">
+                        <label><input type="radio" name="element-6" value="option1"> Option 1</label>
+                    
+                        <label><input type="radio" name="element-6" value="option2"> Option 2</label>
+                    
+                        <label><input type="radio" name="element-6" value="option3"> Option 3</label>
+                    </div>
+        </div>
+        <div class="form-element">
+            <label>Checkboxen-0:</label>
+            <div class="checkbox-group">
+                        <label><input type="checkbox" name="element-7" value="option1"> Option 1</label>
+                    
+                        <label><input type="checkbox" name="element-7" value="option2"> Option 2</label>
+                    
+                        <label><input type="checkbox" name="element-7" value="option3"> Option 3</label>
+                    </div>
+        </div>
+<div class="form-element">
+<button type="submit" class="submit-btn">Absenden</button>
+        </div>
+    </form>
+      <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('generated-form');
+    const downloadButton = document.createElement('button');
+    
+    // Download-Button erstellen und stylen
+    downloadButton.textContent = 'Formular als JSON herunterladen';
+    downloadButton.type = 'button';
+    downloadButton.className = 'submit-btn';
+    downloadButton.style.backgroundColor = '#2196F3';
+    downloadButton.style.marginTop = '10px';
+    
+    // Download-Button nach dem Formular einfügen
+    form.parentNode.insertBefore(downloadButton, form.nextSibling);
+    
+    // Funktion zum Sammeln der Formulardaten
+    function collectFormData() {
+        const formData = {};
+        const formElements = form.querySelectorAll('.form-element');
+        
+        formElements.forEach(element => {
+            const labelElement = element.querySelector('label');
+            if (!labelElement) return;
+            
+            const labelText = labelElement.textContent.replace(/[:-]\d+$/, '').trim();
+            const inputElements = element.querySelectorAll('input, textarea, select');
+            
+            if (inputElements.length === 1) {
+                // Einzelnes Input-Element
+                const input = inputElements[0];
+                let value = '';
+                
+                if (input.type === 'checkbox') {
+                    value = input.checked;
+                } else if (input.type === 'radio') {
+                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                    value = selectedRadio ? selectedRadio.value : '';
+                } else if (input.tagName === 'SELECT') {
+                    value = input.value;
+                } else {
+                    value = input.value;
+                }
+                
+                if (labelText && (value !== '' || input.type === 'checkbox')) {
+                    formData[labelText] = value;
+                }
+            } else if (inputElements.length > 1) {
+                // Mehrere Input-Elemente (Radio-Buttons, Checkboxen)
+                if (element.querySelector('input[type="radio"]')) {
+                    // Radio-Buttons - nur der ausgewählte Wert
+                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                    if (selectedRadio) {
+                        formData[labelText] = selectedRadio.value;
+                    }
+                } else if (element.querySelector('input[type="checkbox"]')) {
+                    // Checkboxen - Array aller ausgewählten Werte
+                    const checkedBoxes = element.querySelectorAll('input[type="checkbox"]:checked');
+                    const values = Array.from(checkedBoxes).map(cb => cb.value);
+                    if (values.length > 0) {
+                        formData[labelText] = values;
+                    }
+                }
+            }
+        });
+        
+        return formData;
+    }
+    
+    // Funktion zum Herunterladen der JSON-Daten
+    function downloadJSON() {
+        const formData = collectFormData();
+        const jsonString = JSON.stringify(formData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'formular-daten.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    // Event-Listener für den Download-Button
+    downloadButton.addEventListener('click', downloadJSON);
+    
+    // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        downloadJSON();
+    });
+});
+    </script>
+
+

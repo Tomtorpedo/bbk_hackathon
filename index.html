@@ -713,8 +713,104 @@
 <button type="submit" class="submit-btn">Absenden</button>
         </div>
     </form>
-
-`;
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('generated-form');
+    const downloadButton = document.createElement('button');
+    
+    // Download-Button erstellen und stylen
+    downloadButton.textContent = 'Formular als JSON herunterladen';
+    downloadButton.type = 'button';
+    downloadButton.className = 'submit-btn';
+    downloadButton.style.backgroundColor = '#2196F3';
+    downloadButton.style.marginTop = '10px';
+    
+    // Download-Button nach dem Formular einfügen
+    form.parentNode.insertBefore(downloadButton, form.nextSibling);
+    
+    // Funktion zum Sammeln der Formulardaten
+    function collectFormData() {
+        const formData = {};
+        const formElements = form.querySelectorAll('.form-element');
+        
+        formElements.forEach(element => {
+            const labelElement = element.querySelector('label');
+            if (!labelElement) return;
+            
+            const labelText = labelElement.textContent.replace(/[:-]\d+$/, '').trim();
+            const inputElements = element.querySelectorAll('input, textarea, select');
+            
+            if (inputElements.length === 1) {
+                // Einzelnes Input-Element
+                const input = inputElements[0];
+                let value = '';
+                
+                if (input.type === 'checkbox') {
+                    value = input.checked;
+                } else if (input.type === 'radio') {
+                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                    value = selectedRadio ? selectedRadio.value : '';
+                } else if (input.tagName === 'SELECT') {
+                    value = input.value;
+                } else {
+                    value = input.value;
+                }
+                
+                if (labelText && (value !== '' || input.type === 'checkbox')) {
+                    formData[labelText] = value;
+                }
+            } else if (inputElements.length > 1) {
+                // Mehrere Input-Elemente (Radio-Buttons, Checkboxen)
+                if (element.querySelector('input[type="radio"]')) {
+                    // Radio-Buttons - nur der ausgewählte Wert
+                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                    if (selectedRadio) {
+                        formData[labelText] = selectedRadio.value;
+                    }
+                } else if (element.querySelector('input[type="checkbox"]')) {
+                    // Checkboxen - Array aller ausgewählten Werte
+                    const checkedBoxes = element.querySelectorAll('input[type="checkbox"]:checked');
+                    const values = Array.from(checkedBoxes).map(cb => cb.value);
+                    if (values.length > 0) {
+                        formData[labelText] = values;
+                    }
+                }
+            }
+        });
+        
+        return formData;
+    }
+    
+    // Funktion zum Herunterladen der JSON-Daten
+    function downloadJSON() {
+        const formData = collectFormData();
+        const jsonString = JSON.stringify(formData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'formular-daten.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    // Event-Listener für den Download-Button
+    downloadButton.addEventListener('click', downloadJSON);
+    
+    // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        downloadJSON();
+    });
+});
+<\/script>
+        <\/body>
+        <\/html>
+`
+;
             
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
