@@ -39,27 +39,34 @@
             height: 50px;
             background-color: #000000;
             position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .tool-container {
-            display: grid;
-            grid-template-columns: 30% auto;
             background-color: #F00000;
-            column-count: 2;
-            height: 100%;
+            height: calc(100vh - 50px);
+            margin-bottom: 15px;
         }
 
         .editor-container {
+            position: fixed;
+            left: 0;
+            top: 50px;
+            width: 340px;
+            height: calc(100vh - 50px);
             display: flex;
             flex-direction: column;
-            margin: 20px;
-            background-color: green;
-            position: static;
+            background: green;
+            z-index: 1100;
         }
 
         .prev-container {
+            margin-left: 340px; /* mindestens Editor-Breite! */
             background-color: yellow;
-            margin: 20px;
+            height: calc(100vh - 50px);
+            overflow-y: auto;
+            z-index: 1200;
         }
 
         .prev-header {
@@ -84,10 +91,12 @@
         }
 
         .Drag-and-Drop-Container {
-            background-color: #F00000;
-            margin: 5px;
+            flex: 1 1 auto;
+            overflow-y: auto;
+            min-height: 0;            /* Wichtig für Flexbox+Scrollbar! */
+            margin: 15px 5px 5px 5px;
             padding: 5px;
-            max-height: 100%;
+            background: #F00000;
         }
 
         .form-element {
