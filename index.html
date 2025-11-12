@@ -27,7 +27,7 @@
             margin-bottom: 30px;
         }
         
-        .form-container {
+        .prev-body {
             background-color: white;
             border-radius: 8px;
         }
@@ -252,7 +252,6 @@
             border-radius: 8px;
             width: 400px;
             max-width: 90%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -415,7 +414,7 @@
             <h2>Header Text</h2>
             <input type="text" name="headertext" placeholder="headertext" size="30" required>
             <h2>Sub Text</h2>
-            <input type="text" name="headersubtext" placeholder="subtext" size="30" required>
+            <input type="text" name="headersubtext" placeholder="headersubtext" size="30" required>
 
             <div class="modal-buttons">
                 <button class="modal-btn cancel-btn" id="header-cancel-btn">Abbrechen</button>
@@ -469,6 +468,70 @@
     </div>
 
     <script>
+        // Drag n' Drop funktionen
+        function dragstartHandler(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function dragoverHandler(ev) {
+            ev.preventDefault();
+        }
+
+        function dropHandler(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            console.log(typeof(data));
+
+            const elementId = 'element-' + elementCount;
+            elementCount++;
+            let elementHTML = '';
+            switch(data) {
+                case 'addText':
+                    console.log("test")
+                    elementHTML = createTextElement(elementId);
+                    elementTypeCount.text++;
+                    break;
+                case 'addTextBlock':
+                    elementHTML = createTextareaElement(elementId);
+                    elementTypeCount.textarea++;
+                    break;
+                case 'addEmail':
+                    elementHTML = createEmailElement(elementId);
+                    elementTypeCount.email++;
+                    break;
+                case 'addNumber':
+                    elementHTML = createNumberElement(elementId);
+                    elementTypeCount.number++;
+                    break;
+                case 'addDate':
+                    elementHTML = createDateElement(elementId);
+                    elementTypeCount.date++;
+                    break;
+                case 'addDropdown':
+                    elementHTML = createDropdownElement(elementId);
+                    elementTypeCount.dropdown++;
+                    break;
+                case 'addRadio':
+                    elementHTML = createRadioElement(elementId);
+                    elementTypeCount.radio++;
+                    break;
+                case 'addCheckbox':
+                    elementHTML = createCheckboxElement(elementId);
+                    elementTypeCount.checkbox++;
+                    break;
+            }
+
+            formContainer.insertAdjacentHTML('beforeend', elementHTML);
+            
+            // Neues Element speichern und Bearbeitungsdialog öffnen
+            newlyAddedElement = document.getElementById(elementId);
+            
+            // Automatisch Bearbeitungsdialog öffnen
+            setTimeout(() => {
+                openEditModal(elementId);
+            }, 100);
+        }
+
         // Element-Zähler
         let elementCount = 0;
         let currentEditElement = null;
@@ -855,10 +918,10 @@
                 document.querySelector(".prev-header-text").textContent = headerText;
 
                 // header text speichern
-                window.headertextnew = headerText;
+                window.headerText = headerText;
             }
             if(headerSubText){
-                document.querySelector(".header-sub-text").textContent = headerSubText;
+                document.querySelector(".prev-header-sub-text").textContent = headerSubText;
 
                 window.headerSubText = headerSubText;
             }
@@ -966,7 +1029,6 @@
     </div>
 </header>
 <body>
-    <h1>Formular</h1>
     <form id="generated-form">
 `;
             
