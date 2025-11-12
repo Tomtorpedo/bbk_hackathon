@@ -1201,144 +1201,147 @@
         // Snapshot-Funktion - Download als JSON-Vorlage
         function downloadSnapshot() 
         {
-        // Formular-Daten sammeln
-        const formData = {
-        name: `Formular-Vorlage-${new Date().toLocaleDateString('de-DE')}`,
-        timestamp: new Date().toISOString(),
-        header: {
-            logo: window.headerLogoNew || '',
-            text: window.headerText || '- PlaceHolder -',
-            subText: window.headerSubText || '- SUB PLACEHOLDER -'
-        },
-        elements: []
-    };
-    
-        // Alle Formularelemente durchgehen
-        const formElements = formContainer.querySelectorAll('.form-element');
-        formElements.forEach(element => {
-        const elementData = {
-            id: element.id,
-            type: element.dataset.type,
-            label: element.querySelector('label').textContent.replace(':', ''),
-            options: element.dataset.options ? JSON.parse(element.dataset.options) : []
+            // Formular-Daten sammeln
+            const formData = {
+            name: `Formular-Vorlage-${new Date().toLocaleDateString('de-DE')}`,
+            timestamp: new Date().toISOString(),
+            header: {
+                logo: window.headerLogoNew || '',
+                text: window.headerText || '- PlaceHolder -',
+                subText: window.headerSubText || '- SUB PLACEHOLDER -'
+            },
+            elements: []
         };
-        formData.elements.push(elementData);
-    });
-    
-        // JSON-String erstellen
-        const jsonString = JSON.stringify(formData, null, 2);
-    
-        // Datei herunterladen
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `formular-vorlage-${new Date().toISOString().slice(0, 10)}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
         
-        alert('Vorlage wurde erfolgreich heruntergeladen!');
-    }
-        // Vorlage importieren
-        function importTemplate(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const templateData = JSON.parse(e.target.result);
-            loadTemplate(templateData);
-            alert('Vorlage wurde erfolgreich importiert!');
-        } catch (error) {
-            alert('Fehler beim Importieren der Vorlage: ' + error.message);
-        }
-    };
-    reader.readAsText(file);
-    
-    // Reset file input
-    event.target.value = '';
-}
-        // Vorlage laden
-        function loadTemplate(templateData) {
-    // Bestätigung einholen, falls bereits Inhalte vorhanden sind
-    const hasExistingContent = formContainer.children.length > 0 || 
-                             (window.headerText && window.headerText !== '- PlaceHolder -');
-    
-    if (hasExistingContent && !confirm('Beim Importieren werden alle aktuellen Inhalte überschrieben. Fortfahren?')) {
-        return;
-    }
-    
-    // Formular zurücksetzen
-    formContainer.innerHTML = '';
-    elementCount = 0;
-    elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0};
-    
-    // Header wiederherstellen
-    if (templateData.header) {
-        document.getElementById('header-img').src = templateData.header.logo || '';
-        document.querySelector('.prev-header-text').textContent = templateData.header.text || '- PlaceHolder -';
-        document.querySelector('.prev-header-sub-text').textContent = templateData.header.subText || '- SUB PLACEHOLDER -';
-        
-        window.headerLogoNew = templateData.header.logo || '';
-        window.headerText = templateData.header.text || '- PlaceHolder -';
-        window.headerSubText = templateData.header.subText || '- SUB PLACEHOLDER -';
-    }
-    
-    // Formularelemente wiederherstellen
-    if (templateData.elements && templateData.elements.length > 0) {
-        templateData.elements.forEach(elementData => {
-            restoreFormElement(elementData);
+            // Alle Formularelemente durchgehen
+            const formElements = formContainer.querySelectorAll('.form-element');
+            formElements.forEach(element => {
+            const elementData = {
+                id: element.id,
+                type: element.dataset.type,
+                label: element.querySelector('label').textContent.replace(':', ''),
+                options: element.dataset.options ? JSON.parse(element.dataset.options) : []
+            };
+            formData.elements.push(elementData);
         });
-    }
-}
+        
+            // JSON-String erstellen
+            const jsonString = JSON.stringify(formData, null, 2);
+        
+            // Datei herunterladen
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `formular-vorlage-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Vorlage wurde erfolgreich heruntergeladen!');
+        }
+        // Vorlage importieren
+        function importTemplate(event)
+        {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const templateData = JSON.parse(e.target.result);
+                    loadTemplate(templateData);
+                    alert('Vorlage wurde erfolgreich importiert!');
+                } catch (error) {
+                    alert('Fehler beim Importieren der Vorlage: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+        // Vorlage laden
+        function loadTemplate(templateData) 
+        {
+            // Bestätigung einholen, falls bereits Inhalte vorhanden sind
+            const hasExistingContent = formContainer.children.length > 0 || 
+                                    (window.headerText && window.headerText !== '- PlaceHolder -');
+            
+            if (hasExistingContent && !confirm('Beim Importieren werden alle aktuellen Inhalte überschrieben. Fortfahren?')) {
+                return;
+            }
+            
+            // Formular zurücksetzen
+            formContainer.innerHTML = '';
+            elementCount = 0;
+            elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0};
+            
+            // Header wiederherstellen
+            if (templateData.header) {
+                document.getElementById('header-img').src = templateData.header.logo || '';
+                document.querySelector('.prev-header-text').textContent = templateData.header.text || '- PlaceHolder -';
+                document.querySelector('.prev-header-sub-text').textContent = templateData.header.subText || '- SUB PLACEHOLDER -';
+                
+                window.headerLogoNew = templateData.header.logo || '';
+                window.headerText = templateData.header.text || '- PlaceHolder -';
+                window.headerSubText = templateData.header.subText || '- SUB PLACEHOLDER -';
+            }
+            
+            // Formularelemente wiederherstellen
+            if (templateData.elements && templateData.elements.length > 0) {
+                templateData.elements.forEach(elementData => {
+                    restoreFormElement(elementData);
+                });
+            }
+        }
         // Formularelement aus Vorlage wiederherstellen
-        function restoreFormElement(elementData) {
-    const elementId = `element-${elementCount}`;
-    elementCount++;
-    
-    let elementHTML = '';
-    const elementType = elementData.type;
-    
-    switch(elementType) {
-        case 'text':
-            elementTypeCount.text++;
-            elementHTML = createTextElement(elementId, elementData.label);
-            break;
-        case 'textarea':
-            elementTypeCount.textarea++;
-            elementHTML = createTextareaElement(elementId, elementData.label);
-            break;
-        case 'email':
-            elementTypeCount.email++;
-            elementHTML = createEmailElement(elementId, elementData.label);
-            break;
-        case 'number':
-            elementTypeCount.number++;
-            elementHTML = createNumberElement(elementId, elementData.label);
-            break;
-        case 'date':
-            elementTypeCount.date++;
-            elementHTML = createDateElement(elementId, elementData.label);
-            break;
-        case 'dropdown':
-            elementTypeCount.dropdown++;
-            elementHTML = createDropdownElement(elementId, elementData.label, elementData.options);
-            break;
-        case 'radio':
-            elementTypeCount.radio++;
-            elementHTML = createRadioElement(elementId, elementData.label, elementData.options);
-            break;
-        case 'checkbox':
-            elementTypeCount.checkbox++;
-            elementHTML = createCheckboxElement(elementId, elementData.label, elementData.options);
-            break;
-    }
-    
-    formContainer.insertAdjacentHTML('beforeend', elementHTML);
-}
+        function restoreFormElement(elementData) 
+        {
+            const elementId = `element-${elementCount}`;
+            elementCount++;
+            
+            let elementHTML = '';
+            const elementType = elementData.type;
+            
+            switch(elementType) {
+                case 'text':
+                    elementTypeCount.text++;
+                    elementHTML = createTextElement(elementId, elementData.label);
+                    break;
+                case 'textarea':
+                    elementTypeCount.textarea++;
+                    elementHTML = createTextareaElement(elementId, elementData.label);
+                    break;
+                case 'email':
+                    elementTypeCount.email++;
+                    elementHTML = createEmailElement(elementId, elementData.label);
+                    break;
+                case 'number':
+                    elementTypeCount.number++;
+                    elementHTML = createNumberElement(elementId, elementData.label);
+                    break;
+                case 'date':
+                    elementTypeCount.date++;
+                    elementHTML = createDateElement(elementId, elementData.label);
+                    break;
+                case 'dropdown':
+                    elementTypeCount.dropdown++;
+                    elementHTML = createDropdownElement(elementId, elementData.label, elementData.options);
+                    break;
+                case 'radio':
+                    elementTypeCount.radio++;
+                    elementHTML = createRadioElement(elementId, elementData.label, elementData.options);
+                    break;
+                case 'checkbox':
+                    elementTypeCount.checkbox++;
+                    elementHTML = createCheckboxElement(elementId, elementData.label, elementData.options);
+                    break;
+            }
+            
+            formContainer.insertAdjacentHTML('beforeend', elementHTML);
+        }
         // Element-Typen erstellen (angepasst für Vorlagen)
         function createTextElement(id, label) {
             return `
@@ -1434,22 +1437,22 @@
             `;
         }
         function createCheckboxElement(id, label, options) {
-    const optionList = options || ['Option 1', 'Option 2', 'Option 3'];
-    return `
-        <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(optionList)}'>
-            <label>${label}:</label>
-            <div class="checkbox-group">
-                ${optionList.map((option, index) => `
-                    <label><input type="checkbox" name="${id}" value="option${index+1}"> ${option}</label>
-                `).join('')}
-            </div>
-            <div class="element-actions">
-                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-            </div>
-        </div>
-    `;
-}
+            const optionList = options || ['Option 1', 'Option 2', 'Option 3'];
+            return `
+                <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(optionList)}'>
+                    <label>${label}:</label>
+                    <div class="checkbox-group">
+                        ${optionList.map((option, index) => `
+                            <label><input type="checkbox" name="${id}" value="option${index+1}"> ${option}</label>
+                        `).join('')}
+                    </div>
+                    <div class="element-actions">
+                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                    </div>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
