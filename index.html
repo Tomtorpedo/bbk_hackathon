@@ -148,27 +148,37 @@
         }
 
 /* Drag and Drop Area */
+        .Drag-and-Drop-Container-Header{
+            height: 50px;
+            margin: 15px 5px 5px 5px;
+            align-content: center;
+            padding: 10px;
+            background-color: rgba(204, 204, 204, 0.6);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
         .Drag-and-Drop-Container {
-            flex: 1 1 auto;
             overflow-y: auto;
+            overflow-x: hidden;
             min-height: 0;
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
             border-radius: 8px;
+            box-sizing: border-box;
         }
 
         .Drag-and-Drop-Elements {
-            margin: 5px;
+            margin: 10px 0;
             padding: 3px;
-            color: white;
-            background-color: #45a049;
+            background-color: #77a7af;
+            outline: 2px solid #396f77;
             border-radius: 4px;
-            width: 85%;
+            max-width: 100%;
+            box-sizing: border-box;
             display: flex;
             flex-direction: row;
             text-align: left;
-            vertical-align: center;
             align-items: center;
         }
         .Drag-and-Drop-Elements img{
@@ -176,8 +186,11 @@
         }
         .Drag-and-Drop-Elements:hover {
             cursor: grab;
+            background-color: #648c93;
+            outline: 2px solid #224247;
         }
 
+/*Forms*/
         .form-element {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -342,9 +355,6 @@
             padding: 5px;
             display: flex;
             flex-direction: row;
-            text-align: left;
-            vertical-align: center;
-            align-items: center;
             justify-content: flex-end;
             margin-top: 20px;
         }
@@ -354,24 +364,26 @@
             margin-left: 10px;
             border: none;
             border-radius: 4px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             cursor: pointer;
+            background-color: #77a7af;
+            outline: 1px solid #396f77;
         }
-        
-        .confirm-btn {
-            background-color: #4CAF50;
-            color: white;
+        .modal-btn:hover{
+            background-color: #648c93;
+            outline: 1px solid #224247;
+        }
+        .modal-btn img{
+            margin-right: 5px;
+        }
+        .confirm-btn:disabled {
+            background-color: #9bd7e1;
+            outline: 1px solid #53a2ae;
         }
 
-        .confirm-btn:disabled {
-            background-color: #6a6a6a;
-            color: white;
-        }
-        
-        .cancel-btn {
-            background-color: #f44336;
-            color: white;
-        }
-        
         .radio-group, .checkbox-group {
             margin: 10px 0;
         }
@@ -393,6 +405,12 @@
             text-align: left;
             vertical-align: center;
             align-items: center;
+            background-color: #77a7af;
+            outline: 1px solid #396f77;
+        }
+        .btn:hover{
+            background-color: #648c93;
+            outline: 1px solid #224247;
         }
 
         .action-buttons {
@@ -422,54 +440,28 @@
         .export-buttons img{
             margin-right: 5px;
         }
-        .download-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-        .download-btn:hover {
-            background-color: #0b7dda;
-        }
 
-        /* snapshot Styling */
-        .snapshot-btn {
-            background-color: #9C27B0;
-            color: white;
-        }
-
-        .snapshot-btn:hover {
-            background-color: #7B1FA2;
-        }
-
-        .import-btn {
-            background-color: #FF9800;
-            color: white;
-        }
-
-        .import-btn:hover {
-            background-color: #F57C00;
-        }
         .file-input {
             display: none;
         }
 
         /* header-edit-container Styling */
         .header-edit-container input {
-            margin: 5px;
+            margin: 5px 10px 10px 5px;
             width: 90%;
+        }
+        .header-edit-container label {
+            margin-left: 5px;
+            font-weight: bold;
         }
         .header-btn {
             width: 100%;
             height: 30px;
-            background-color: #4CAF50;
-            color: white;
         }
-        .header-btn:hover {
-            background-color: #45a049;
-        }
+
         .header-btn img{
             margin-right: 5px;
         }
-
 
         /* <img src="data:image/svg+xml;base64,"  alt="icon">  line für icon muss base64 string*/
     </style>
@@ -477,7 +469,6 @@
 
 <header>
     <!--
-
     ## Hier wäre eine Toolheader möglich mit weiteren auswahlmögichkeiten für ein auswertungstool oder ähnliches ##
 
     <div class="tool-header">
@@ -496,9 +487,9 @@
                     <label for="header-logo-file">Logo hochladen:</label>
                     <input type="file" id="header-logo-file" name="header-logo-file" accept="image/png">
                     <label for="headertitle">Titel:</label>
-                    <input type="text" id="headertitle" name="headertitle" placeholder="headertitle">
+                    <input type="text" id="headertitle" name="headertitle" placeholder="Titel">
                     <label for="headersubtext">Untertitel:</label>
-                    <input type="text" id="headersubtext" name="headersubtext" placeholder="headersubtext">
+                    <input type="text" id="headersubtext" name="headersubtext" placeholder="Untertitel">
                 </div>
                 <div class="action-buttons">
                     <button type="button" class="btn header-btn" id="add-header-logo-btn">
@@ -507,10 +498,11 @@
                     </button>
                 </div>
             </div>
+            <div class="Drag-and-Drop-Container-Header">
+                <b>Elementauswahl</b>
+            </div>
             <div class="Drag-and-Drop-Container">
-                <div class="Drag-and-Drop-Container-Header">
-                    <h2>Elementauswahl</h2>
-                </div>
+
                 <div class="Drag-and-Drop-Elements" id="addText" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64," alt="icon">
                     <p>Text hinzufügen</p>
