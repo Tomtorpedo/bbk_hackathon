@@ -268,6 +268,31 @@
             border-radius: 4px;
             margin-bottom: 10px;
         }
+
+        .edit-text {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .edit-checkboxes label{
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .edit-checkboxes input{
+            width: 14px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+
         
         .option-item {
             display: flex;
@@ -454,6 +479,7 @@
     <div class="modal" id="edit-modal">
         <div class="modal-content">
             <h2>Element bearbeiten</h2>
+            <div class="edit-text">
             <label for="edit-label">Frage/Label:</label>
             <input type="text" id="edit-label" placeholder="Frage eingeben">
             <div id="edit-options-container" style="display: none;">
@@ -488,6 +514,7 @@
         const editCancelBtn = document.getElementById('edit-cancel-btn');
         const editConfirmBtn = document.getElementById('edit-confirm-btn');
         const editLabelInput = document.getElementById('edit-label');
+        const editDescriptionInput = document.getElementById('edit-description');
         const editOptionsContainer = document.getElementById('edit-options-container');
         const editOptionsList = document.getElementById('edit-options-list');
         const addOptionBtn = document.getElementById('add-option-btn');
@@ -495,6 +522,7 @@
         const importBtn = document.getElementById('import-btn');
         const fileInput = document.getElementById('file-input');
         const addHeaderLogoBtn = document.getElementById('add-header-logo-btn');
+
 
         // Event-Listener
         cancelBtn.addEventListener('click', closeElementModal);
@@ -521,6 +549,9 @@
             // Label-Wert setzen
             const label = currentEditElement.querySelector('label');
             editLabelInput.value = label.textContent.replace(':', '');
+
+            const description = currentEditElement.querySelector('small');
+            editDescriptionInput.value = description.textContent;
             
             // Optionen anzeigen, falls vorhanden
             const elementType = currentEditElement.dataset.type;
@@ -792,7 +823,7 @@
             const optionItem = document.createElement('div');
             optionItem.className = 'option-item';
             optionItem.innerHTML = `
-                <input type="text" value="${value}" placeholder="Optionstext">
+                <input id="option-${index}" type="text" value="${value}" placeholder="Optionstext">
                 <button type="button" class="remove-option-btn" onclick="this.parentElement.remove()">Entfernen</button>
             `;
             editOptionsList.appendChild(optionItem);
@@ -816,6 +847,12 @@
                 document.getElementById("edit-confirm-btn").disabled = false;
             }
         }
+
+        function testPrint() {
+            console.log("test");
+        }
+
+
         
         // Element-Bearbeitung speichern
         function saveElementEdit() {
@@ -825,7 +862,12 @@
             const newLabel = editLabelInput.value;
             const labelElement = currentEditElement.querySelector('label');
             labelElement.textContent = newLabel + ':';
-            
+
+            //Beschreibung aktualisieren
+            const newDescription = editDescriptionInput.value;
+            const descriptionElement = currentEditElement.querySelector('small');
+            descriptionElement.textContent = newDescription;
+
             // Optionen aktualisieren, falls vorhanden
             const elementType = currentEditElement.dataset.type;
             
@@ -837,21 +879,20 @@
                 
                 // Datenattribut aktualisieren
                 currentEditElement.dataset.options = JSON.stringify(options);
-                
                 // UI-Elemente aktualisieren
                 if (elementType === 'dropdown') {
                     const selectElement = currentEditElement.querySelector('select');
                     selectElement.innerHTML = '<option value="">Bitte auswählen</option>' + 
-                        options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('');
+                        options.map((option, index) => `<option value="${option}">${option}</option>`).join('');
                 } else if (elementType === 'radio') {
                     const radioGroup = currentEditElement.querySelector('.radio-group');
                     radioGroup.innerHTML = options.map((option, index) => `
-                        <label><input type="radio" name="${currentEditElement.id}" value="option${index+1}"> ${option}</label>
+                        <label><input type="radio" name="${currentEditElement.id}-${index}" value="${option}"> ${option}</label>
                     `).join('');
                 } else if (elementType === 'checkbox') {
                     const checkboxGroup = currentEditElement.querySelector('.checkbox-group');
                     checkboxGroup.innerHTML = options.map((option, index) => `
-                        <label><input type="checkbox" name="${currentEditElement.id}" value="option${index+1}"> ${option}</label>
+                        <label><input type="checkbox" name="${currentEditElement.id}-${index}" value="${option}"> ${option}</label>
                     `).join('');
                 }
             }
@@ -1012,9 +1053,11 @@
                 const elementId = element.id;
                 const elementType = element.dataset.type;
                 const label = element.querySelector('label').textContent;
+                const description = element.querySelector('small').textContent;
                 
                 formHTML += `\n        <div class="form-element">\n`;
                 formHTML += `            <label>${label}</label>\n`;
+                formHTML += `            <small>${description}</small>`;
                 
                 if (elementType === 'dropdown') {
                     const selectElement = element.querySelector('select');
