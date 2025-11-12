@@ -61,7 +61,7 @@
 
         .form-container {
             padding: 10px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
 
         .insert-div {
@@ -439,9 +439,12 @@
         <div class="editor-container">
             <div class="options-contianer">
                 <div class="header-edit-container">
+                    <label for="header-logo-file">Logo hochladen:</label>
                     <input type="file" id="header-logo-file" name="header-logo-file" accept="image/png">
-                    <input type="text" name="headertitle" placeholder="headertitle">
-                    <input type="text" name="headersubtext" placeholder="headersubtext">
+                    <label for="headertitle">Titel:</label>
+                    <input type="text" id="headertitle" name="headertitle" placeholder="headertitle">
+                    <label for="headersubtext">Untertitel:</label>
+                    <input type="text" id="headersubtext" name="headersubtext" placeholder="headersubtext">
                 </div>
                 <div class="action-buttons">
                     <button type="button" class="btn header-btn" id="add-header-logo-btn">Header Speichern</button>
