@@ -1110,6 +1110,11 @@
 
     // Formular als HTML herunterladen
         function downloadForm() {
+
+            const headerLogo = document.getElementById("header-img").getAttribute("src");
+            const headerTitle = document.querySelector(".prev-header-text").textContent;
+            const headerSubText = document.querySelector(".prev-header-sub-text").textContent;
+
             // Formular-HTML erstellen
             let formHTML = 
             `
@@ -1213,10 +1218,10 @@
                 <div class="main-container">
                     <header>
                         <div class="header-container" id="header-container">
-                            <div class="prev-header-logo"><img id="header-img" src="" alt="LOGO" width="150px" height="150px"></div>
+                            <div class="prev-header-logo"><img id="header-img" src=${headerLogo} alt="LOGO" width="150px" height="150px"></div>
                             <div class="prev-header-content">
-                                <div class="prev-header-text">- PlaceHolder -</div>
-                                <div class="prev-header-sub-text">- SUB PLACEHOLDER -</div>
+                                <div class="prev-header-text">${headerTitle}</div>
+                                <div class="prev-header-sub-text">${headerSubText}</div>
                             </div>
                         </div>
                     </header>
