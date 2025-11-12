@@ -783,9 +783,9 @@
                     options = ['Option 1', 'Option 2', 'Option 3'];
                     return `
                         <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
-                            <label>${label}:</label>
+                            <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <div class="radio-group">
+                            <div class="radio-group" id="${id}-${type}">
                                 ${options.map((option, index) => `
                                     <label for="${id}-${type}-${index}"><input type="radio" name="${id}-${type}-${index}" id="${id}-${type}-${index}" value="${option}"> ${option}</label>
                                 `).join('')}
@@ -802,9 +802,9 @@
                     options = ['Option 1', 'Option 2', 'Option 3'];
                     return `
                         <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
-                            <label>${label}:</label>
+                            <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <div class="checkbox-group">
+                            <div class="checkbox-group" id="${id}-${type}">
                                 ${options.map((option, index) => `
                                     <label for="${id}-${type}-${index}"><input type="checkbox" name="${id}-${type}-${index}" id="${id}-${type}-${index}" value="${option}"> ${option}</label>
                                 `).join('')}
@@ -1094,7 +1094,7 @@
                 const description = element.querySelector('small').textContent;
                 
                 formHTML += `\n        <div class="form-element">\n`;
-                formHTML += `            <label>${label}</label>\n`;
+                formHTML += `            <label for="${elementId}-${elementType}">${label}</label>\n`;
                 formHTML += `            <small>${description}</small>`;
                 
                 if (elementType === 'dropdown') {
