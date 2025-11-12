@@ -87,7 +87,7 @@
         }
 
         .prev-container {
-            margin-left: 370px; /* mindestens Editor-Breite! */
+            margin-left: 370px;
             margin-right: 30px;
             margin-top: 20px;
             padding: 5px;
@@ -121,7 +121,7 @@
         .Drag-and-Drop-Container {
             flex: 1 1 auto;
             overflow-y: auto;
-            min-height: 0;            /* Wichtig für Flexbox+Scrollbar! */
+            min-height: 0;
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
@@ -134,6 +134,9 @@
             background-color: #45a049;
             border-radius: 4px;
             width: 85%;
+        }
+        .newElement:hover {
+            cursor: grab;
         }
         .export-buttons {
             background-color: rgba(204, 204, 204, 0.6);
@@ -174,7 +177,14 @@
             display: flex;
             gap: 5px;
         }
-        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .edit-btn, .delete-btn {
             border: none;
             border-radius: 4px;
@@ -206,24 +216,7 @@
             justify-content: space-between;
             margin-top: 20px;
         }
-        
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .add-element-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .add-element-btn:hover {
-            background-color: #45a049;
-        }
-        
+
         .download-btn {
             background-color: #2196F3;
             color: white;
@@ -374,24 +367,57 @@
             display: block;
             margin-bottom: 5px;
         }
+
+        /* snapshot Styling */
+        .snapshot-btn {
+            background-color: #9C27B0;
+            color: white;
+        }
+
+        .snapshot-btn:hover {
+            background-color: #7B1FA2;
+        }
+
+        .import-btn {
+            background-color: #FF9800;
+            color: white;
+        }
+
+        .import-btn:hover {
+            background-color: #F57C00;
+        }
+        .file-input {
+            display: none;
+        }
+
+        /* header-edit-container Styling */
+        .header-edit-container input {
+            margin: 5px;
+            width: 90%;
+        }
+
     </style>
 </head>
 
 <header>
-    <dev class="tool-header">
-        <dev class="tool-header-logo">LOGO</dev>
-        <dev class="tool-header-buttons">
-        </dev>
-    </dev>
+    <div class="tool-header">
+        <div class="tool-header-logo">LOGO</div>
+        <div class="tool-header-buttons">
+        </div>
+    </div>
 </header>
 
 <body>
     <div class="tool-container">
         <div class="editor-container">
             <div class="options-contianer">
+                <div class="header-edit-container">
+                    <input type="file" id="header-logo-file" name="header-logo-file" accept="image/png">
+                    <input type="text" name="headertitle" placeholder="headertitle">
+                    <input type="text" name="headersubtext" placeholder="headersubtext">
+                </div>
                 <div class="action-buttons">
-                    <button class="btn header-btn" id="header-btn" type="button">Header bearbeiten</button>
-                    <button class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
+                    <button type="button" class="btn header-btn" id="add-header-logo-btn">Header Speichern</button>
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
@@ -405,11 +431,13 @@
                 <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">Multiple-Choice hinzufügen</div>
             </div>
             <div class="export-buttons">
-                <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
+                <button type="button" class="btn download-btn" id="download-btn">Formular herunterladen</button>
+                <button type="button" class="btn snapshot-btn" id="snapshot-btn">Vorlage speichern</button>
+                <button type="button" class="btn import-btn" id="import-btn">Vorlage importieren</button>
+                <input type="file" id="file-input" class="file-input" accept=".json">
             </div>
         </div>
         <div class="prev-container">
-
             <div class="prev-header">
                 <div class="prev-header-logo"><img id="header-img" src="" alt="LOGO" width="150px" height="150px"></div>
                 <div class="prev-header-content">
@@ -417,7 +445,6 @@
                     <div class="prev-header-sub-text">- SUB PLACEHOLDER -</div>
                 </div>
             </div>
-
             <div class="prev-body">
                 <div class="form-container" id="form-container">
                     <!-- Formularelemente werden hier dynamisch hinzugefügt -->
@@ -426,28 +453,6 @@
             </div>
         </div>
     </div>
-
-
-    
-
-
-    <!-- Modal für Header Edit -->
-    <div class="modal" id="header-modal">
-        <div class="modal-content">
-            <h2>Logo hochladen</h2>
-            <input type="file" id="header-logo-input" accept="image/png" required>
-            <h2>Header Text</h2>
-            <input type="text" name="headertext" placeholder="headertext" size="30" required>
-            <h2>Sub Text</h2>
-            <input type="text" name="headersubtext" placeholder="headersubtext" size="30" required>
-
-            <div class="modal-buttons">
-                <button class="modal-btn cancel-btn" id="header-cancel-btn">Abbrechen</button>
-                <button class="modal-btn confirm-btn" id="header-confirm-btn">Speichern</button>
-            </div>
-        </div>
-    </div>
-
 
     <!-- Modal für Elementtyp-Auswahl -->
     <div class="modal" id="element-modal">
@@ -464,12 +469,12 @@
                 <option value="checkbox">Checkbox</option>
             </select>
             <div class="modal-buttons">
-                <button class="modal-btn cancel-btn" id="cancel-btn">Abbrechen</button>
-                <button class="modal-btn confirm-btn" id="confirm-btn">Hinzufügen</button>
+                <button type="button" class="modal-btn cancel-btn" id="cancel-btn">Abbrechen</button>
+                <button type="button" class="modal-btn confirm-btn" id="confirm-btn">Hinzufügen</button>
             </div>
         </div>
     </div>
-    
+
     <!-- Modal für Element-Bearbeitung -->
     <div class="modal" id="edit-modal">
         <div class="modal-content">
@@ -477,103 +482,29 @@
             <div class="edit-text">
             <label for="edit-label">Frage/Label:</label>
             <input type="text" id="edit-label" placeholder="Frage eingeben">
-            <label for="edit-description">Beschreibung:</label>
-            <input type="text" id="edit-description" placeholder="Beschreibung eingeben" maxlength="69">
-            </div>
-            <div class="edit-checkboxes">
-            <input type="checkbox" id="pflicht" name="pflicht">
-            <label for="pflicht">Pflichtfeld</label>
-            </div>
             <div id="edit-options-container" style="display: none;">
                 <label>Optionen:</label>
                 <div id="edit-options-list">
                     <!-- Optionen werden hier dynamisch hinzugefügt -->
                 </div>
-                <button class="add-option-btn" id="add-option-btn">Option hinzufügen</button>
+                <button type="button" class="add-option-btn" id="add-option-btn">Option hinzufügen</button>
             </div>
-            
             <div class="modal-buttons">
-                <button class="modal-btn cancel-btn" id="edit-cancel-btn">Abbrechen</button>
-                <button class="modal-btn confirm-btn" id="edit-confirm-btn">Speichern</button>
+                <button type="button" class="modal-btn cancel-btn" id="edit-cancel-btn">Abbrechen</button>
+                <button type="button" class="modal-btn confirm-btn" id="edit-confirm-btn">Speichern</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Drag n' Drop funktionen
-        function dragstartHandler(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function dragoverHandler(ev) {
-            ev.preventDefault();
-        }
-
-        function dropHandler(ev) {
-            ev.preventDefault();
-            let data = ev.dataTransfer.getData("text");
-            console.log(typeof(data));
-
-            const elementId = 'element-' + elementCount;
-            elementCount++;
-            let elementHTML = '';
-            switch(data) {
-                case 'addText':
-                    console.log("test")
-                    elementHTML = createTextElement(elementId);
-                    elementTypeCount.text++;
-                    break;
-                case 'addTextBlock':
-                    elementHTML = createTextareaElement(elementId);
-                    elementTypeCount.textarea++;
-                    break;
-                case 'addEmail':
-                    elementHTML = createEmailElement(elementId);
-                    elementTypeCount.email++;
-                    break;
-                case 'addNumber':
-                    elementHTML = createNumberElement(elementId);
-                    elementTypeCount.number++;
-                    break;
-                case 'addDate':
-                    elementHTML = createDateElement(elementId);
-                    elementTypeCount.date++;
-                    break;
-                case 'addDropdown':
-                    elementHTML = createDropdownElement(elementId);
-                    elementTypeCount.dropdown++;
-                    break;
-                case 'addRadio':
-                    elementHTML = createRadioElement(elementId);
-                    elementTypeCount.radio++;
-                    break;
-                case 'addCheckbox':
-                    elementHTML = createCheckboxElement(elementId);
-                    elementTypeCount.checkbox++;
-                    break;
-            }
-
-            formContainer.insertAdjacentHTML('beforeend', elementHTML);
-            
-            // Neues Element speichern und Bearbeitungsdialog öffnen
-            newlyAddedElement = document.getElementById(elementId);
-            
-            // Automatisch Bearbeitungsdialog öffnen
-            setTimeout(() => {
-                openEditModal(elementId);
-            }, 100);
-        }
-
         // Element-Zähler
         let elementCount = 0;
         let currentEditElement = null;
         let newlyAddedElement = null;
         let elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0}
         
-        // DOM-Elemente
-        const headerModal = document.getElementById('header-modal');
+    // DOM-Elemente
         const formContainer = document.getElementById('form-container');
-        const addElementBtn = document.getElementById('add-element-btn');
         const downloadBtn = document.getElementById('download-btn');
         const elementModal = document.getElementById('element-modal');
         const editModal = document.getElementById('edit-modal');
@@ -587,13 +518,13 @@
         const editOptionsContainer = document.getElementById('edit-options-container');
         const editOptionsList = document.getElementById('edit-options-list');
         const addOptionBtn = document.getElementById('add-option-btn');
-        const headerBtn = document.getElementById('header-btn');
-        const headerConfirmBtn = document.getElementById('header-confirm-btn');
-        const headerCancelBtn = document.getElementById('header-cancel-btn');
+        const snapshotBtn = document.getElementById('snapshot-btn');
+        const importBtn = document.getElementById('import-btn');
+        const fileInput = document.getElementById('file-input');
+        const addHeaderLogoBtn = document.getElementById('add-header-logo-btn');
 
 
         // Event-Listener
-        addElementBtn.addEventListener('click', openElementModal);
         cancelBtn.addEventListener('click', closeElementModal);
         confirmBtn.addEventListener('click', addFormElement);
         downloadBtn.addEventListener('click', downloadForm);
@@ -601,33 +532,22 @@
         editLabelInput.addEventListener('input', validChange);
         editConfirmBtn.addEventListener('click', saveElementEdit);
         addOptionBtn.addEventListener('click', addOption);
-        headerBtn.addEventListener('click', openHeaderModal);
-        headerCancelBtn.addEventListener('click', closeHeaderModal);
-        headerConfirmBtn.addEventListener('click', saveHeaderEdit);
-        
-        // Modal-Funktionen
-        function openHeaderModal() {
-            headerModal.style.display = 'block';
-        }
+        snapshotBtn.addEventListener('click', downloadSnapshot);
+        importBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', importTemplate);
+        addHeaderLogoBtn.addEventListener('click', editHeader);
 
-        function closeHeaderModal() {
-            headerModal.style.display = 'none';
-        }
 
-        function openElementModal() {
-            elementModal.style.display = 'block';
-        }
-        
+    // Modal-Funktionen
         function closeElementModal() {
             elementModal.style.display = 'none';
         }
-        
         function openEditModal(elementId) {
             currentEditElement = document.getElementById(elementId);
             if (!currentEditElement) return;
             
             // Label-Wert setzen
-            const label= currentEditElement.querySelector('label');
+            const label = currentEditElement.querySelector('label');
             editLabelInput.value = label.textContent.replace(':', '');
 
             const description = currentEditElement.querySelector('small');
@@ -653,61 +573,71 @@
             
             editModal.style.display = 'block';
         }
-        
         function closeEditModal() {
             editModal.style.display = 'none';
             currentEditElement = null;
             newlyAddedElement = null;
         }
-        
-        // Formular-Element hinzufügen
-        function addFormElement() {
-            const elementType = elementTypeSelect.value;
+
+    // Drag n' Drop funktionen
+        function dragstartHandler(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function dragoverHandler(ev) {
+            ev.preventDefault();
+        }
+
+        function dropHandler(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+
+            // Zuerst Zähler erhöhen, dann Element erstellen
+            let elementType = '';
+            switch(data) {
+                case 'addText':
+                    elementTypeCount.text++;
+                    elementType = 'text';
+                    break;
+                case 'addTextBlock':
+                    elementTypeCount.textarea++;
+                    elementType = 'textarea';
+                    break;
+                case 'addEmail':
+                    elementTypeCount.email++;
+                    elementType = 'email';
+                    break;
+                case 'addNumber':
+                    elementTypeCount.number++;
+                    elementType = 'number';
+                    break;
+                case 'addDate':
+                    elementTypeCount.date++;
+                    elementType = 'date';
+                    break;
+                case 'addDropdown':
+                    elementTypeCount.dropdown++;
+                    elementType = 'dropdown';
+                    break;
+                case 'addRadio':
+                    elementTypeCount.radio++;
+                    elementType = 'radio';
+                    break;
+                case 'addCheckbox':
+                    elementTypeCount.checkbox++;
+                    elementType = 'checkbox';
+                    break;
+            }
+
             const elementId = 'element-' + elementCount;
             elementCount++;
             
-            let elementHTML = '';
-            
-            switch(elementType) {
-                case 'text':
-                    elementHTML = createTextElement(elementId);
-                    elementTypeCount.text++;
-                    break;
-                case 'textarea':
-                    elementHTML = createTextareaElement(elementId);
-                    elementTypeCount.textarea++;
-                    break;
-                case 'email':
-                    elementHTML = createEmailElement(elementId);
-                    elementTypeCount.email++;
-                    break;
-                case 'number':
-                    elementHTML = createNumberElement(elementId);
-                    elementTypeCount.number++;
-                    break;
-                case 'date':
-                    elementHTML = createDateElement(elementId);
-                    elementTypeCount.date++;
-                    break;
-                case 'dropdown':
-                    elementHTML = createDropdownElement(elementId);
-                    elementTypeCount.dropdown++;
-                    break;
-                case 'radio':
-                    elementHTML = createRadioElement(elementId);
-                    elementTypeCount.radio++;
-                    break;
-                case 'checkbox':
-                    elementHTML = createCheckboxElement(elementId);
-                    elementTypeCount.checkbox++;
-                    break;
-            }
-            
+            // Element mit korrekten Werten erstellen
+            let elementHTML = createFormElement(elementType, elementId);
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
             
             // Neues Element speichern und Bearbeitungsdialog öffnen
             newlyAddedElement = document.getElementById(elementId);
-            closeElementModal();
             
             // Automatisch Bearbeitungsdialog öffnen
             setTimeout(() => {
@@ -715,131 +645,165 @@
             }, 100);
         }
         
-        // Element-Typen erstellen
-        function createTextElement(id) {
-            return `
-                <div class="form-element" id="${id}" data-type="text">
-                    <label>Textfeld-${elementTypeCount.text}:</label>
-                    <small></small>
-                    <input type="text" name="${id}" placeholder="Text eingeben">
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
+    // Elementerstellung
+        // Zentrale Funktion zur Elementerstellung
+        function createFormElement(type, id, customLabel = null) {
+            let label, value, placeholder, options;
+
+            switch(type) {
+                case 'text':
+                    label = customLabel || `Textfeld-${elementTypeCount.text}`;
+                    value = label;
+                    placeholder = "Text eingeben";
+                    return `
+                        <div class="form-element" id="${id}" data-type="text">
+                            <label>${label}:</label>
+                            <input type="text" name="${id}" placeholder="${placeholder}" value="${value}">
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'textarea':
+                    label = customLabel || `Textbereich-${elementTypeCount.textarea}`;
+                    value = label;
+                    placeholder = "Längeren Text eingeben";
+                    return `
+                        <div class="form-element" id="${id}" data-type="textarea">
+                            <label>${label}:</label>
+                            <textarea name="${id}" rows="4" placeholder="${placeholder}">${value}</textarea>
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'email':
+                    label = customLabel || `E-Mail-${elementTypeCount.email}`;
+                    value = `beispiel${elementTypeCount.email}@email.com`;
+                    placeholder = "E-Mail-Adresse eingeben";
+                    return `
+                        <div class="form-element" id="${id}" data-type="email">
+                            <label>${label}:</label>
+                            <input type="email" name="${id}" placeholder="${placeholder}" value="${value}">
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'number':
+                    label = customLabel || `Zahl-${elementTypeCount.number}`;
+                    value = elementTypeCount.number;
+                    placeholder = "Zahl eingeben";
+                    return `
+                        <div class="form-element" id="${id}" data-type="number">
+                            <label>${label}:</label>
+                            <input type="number" name="${id}" placeholder="${placeholder}" value="${value}">
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'date':
+                    label = customLabel || `Datum-${elementTypeCount.date}`;
+                    const today = new Date().toISOString().split('T')[0];
+                    return `
+                        <div class="form-element" id="${id}" data-type="date">
+                            <label>${label}:</label>
+                            <input type="date" name="${id}" value="${today}">
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'dropdown':
+                    label = customLabel || `Auswahlmenü-${elementTypeCount.dropdown}`;
+                    options = ['Option 1', 'Option 2', 'Option 3'];
+                    return `
+                        <div class="form-element" id="${id}" data-type="dropdown" data-options='${JSON.stringify(options)}'>
+                            <label>${label}:</label>
+                            <select name="${id}">
+                                <option value="">Bitte auswählen</option>
+                                ${options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('')}
+                            </select>
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'radio':
+                    label = customLabel || `Single-Choice-${elementTypeCount.radio}`;
+                    options = ['Option 1', 'Option 2', 'Option 3'];
+                    return `
+                        <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
+                            <label>${label}:</label>
+                            <div class="radio-group">
+                                ${options.map((option, index) => `
+                                    <label><input type="radio" name="${id}" value="option${index+1}"> ${option}</label>
+                                `).join('')}
+                            </div>
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'checkbox':
+                    label = customLabel || `Multiple-Choice-${elementTypeCount.checkbox}`;
+                    options = ['Option 1', 'Option 2', 'Option 3'];
+                    return `
+                        <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
+                            <label>${label}:</label>
+                            <div class="checkbox-group">
+                                ${options.map((option, index) => `
+                                    <label><input type="checkbox" name="${id}" value="option${index+1}"> ${option}</label>
+                                `).join('')}
+                            </div>
+                            <div class="element-actions">
+                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                            </div>
+                        </div>
+                    `;
+
+                default:
+                    return '';
+            }
         }
-        
-        function createTextareaElement(id) {
-            return `
-                <div class="form-element" id="${id}" data-type="textarea">
-                    <label>Textbereich-${elementTypeCount.textarea}:</label>
-                    <small></small>
-                    <textarea name="${id}" rows="4" placeholder="Längeren Text eingeben"></textarea>
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createEmailElement(id) {
-            return `
-                <div class="form-element" id="${id}" data-type="email">
-                    <label>E-Mail-${elementTypeCount.email}:</label>
-                    <small></small>
-                    <input type="email" name="${id}" placeholder="E-Mail-Adresse eingeben">
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createNumberElement(id) {
-            return `
-                <div class="form-element" id="${id}" data-type="number">
-                    <label>Zahl-${elementTypeCount.number}:</label>
-                    <small></small>
-                    <input type="number" name="${id}" placeholder="Zahl eingeben">
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createDateElement(id) {
-            return `
-                <div class="form-element" id="${id}" data-type="date">
-                    <label>Datum-${elementTypeCount.date}:</label>
-                    <small></small>
-                    <input type="date" name="${id}">
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createDropdownElement(id) {
-            const options = ['Option 1', 'Option 2', 'Option 3'];
-            return `
-                <div class="form-element" id="${id}" data-type="dropdown" data-options='${JSON.stringify(options)}'>
-                    <label>Dropdown-${elementTypeCount.dropdown}:</label>
-                    <small></small>
-                    <select name="${id}">
-                        <option value="">Bitte auswählen</option>
-                        ${options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('')}
-                    </select>
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createRadioElement(id) {
-            const options = ['Option 1', 'Option 2', 'Option 3'];
-            return `
-                <div class="form-element" id="${id}" data-type="radio" data-options='${JSON.stringify(options)}'>
-                    <label>Radio-Buttons-${elementTypeCount.radio}:</label>
-                    <small></small>
-                    <div class="radio-group">
-                        ${options.map((option, index) => `
-                            <label><input type="radio" name="${id}-${index}" value="option${index+1}"> ${option}</label>
-                        `).join('')}
-                    </div>
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createCheckboxElement(id) {
-            const options = ['Option 1', 'Option 2', 'Option 3'];
-            return `
-                <div class="form-element" id="${id}" data-type="checkbox" data-options='${JSON.stringify(options)}'>
-                    <label>Checkboxen-${elementTypeCount.checkbox}:</label>
-                    <small></small>
-                    <div class="checkbox-group">
-                        ${options.map((option, index) => `
-                            <label><input type="checkbox" name="${id}-${index}" value="option${index+1}"> ${option}</label>
-                        `).join('')}
-                    </div>
-                    <div class="element-actions">
-                        <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                        <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
-                    </div>
-                </div>
-            `;
+
+        // Formular-Element hinzufügen
+        function addFormElement() {
+            const elementType = elementTypeSelect.value;
+
+            // Zähler erhöhen
+            elementTypeCount[elementType]++;
+
+            const elementId = 'element-' + elementCount;
+            elementCount++;
+
+            let elementHTML = createFormElement(elementType, elementId);
+            formContainer.insertAdjacentHTML('beforeend', elementHTML);
+
+            // Neues Element speichern und Bearbeitungsdialog öffnen
+            newlyAddedElement = document.getElementById(elementId);
+            closeElementModal();
+
+            // Automatisch Bearbeitungsdialog öffnen
+            setTimeout(() => {
+                openEditModal(elementId);
+            }, 100);
         }
         
         // Element löschen
@@ -855,7 +819,6 @@
             const index = editOptionsList.children.length;
             addOptionToEditList('', index);
         }
-        
         function addOptionToEditList(value, index) {
             const optionItem = document.createElement('div');
             optionItem.className = 'option-item';
@@ -865,25 +828,23 @@
             `;
             editOptionsList.appendChild(optionItem);
         }
-
         function validChange() {
             const newLabel = editLabelInput.value;
             const formElements = formContainer.querySelectorAll('.form-element');
-            let validLabel = true
-            formElements.forEach(isUsed); 
-            if (validLabel===false){
-                console.log("alarm")
-                document.getElementById("edit-confirm-btn").disabled = true;
-            } else {
-                    console.log("test");
-                    document.getElementById("edit-confirm-btn").disabled = false;
-                }
-            
-            function isUsed(element) {
+            let validLabel = true;
+
+            formElements.forEach(element => {
                 const label = element.querySelector('label').textContent;
-                if ((label===newLabel+':')&&(element.id!=currentEditElement.id)) {validLabel=false
+                if ((label === newLabel + ':') && (element.id !== currentEditElement.id)) {
+                    validLabel = false;
                     return;
                 }
+            });
+
+            if (validLabel === false) {
+                document.getElementById("edit-confirm-btn").disabled = true;
+            } else {
+                document.getElementById("edit-confirm-btn").disabled = false;
             }
         }
 
@@ -939,52 +900,51 @@
             closeEditModal();
         }
 
-        // Header Edit speichern
+    // header Logo change
 
-        function saveHeaderEdit(){
-            const logoInput = document.getElementById("header-logo-input");
-            const headerTextInput = document.querySelector("input[name='headertext']");
+        function editHeader(){
+            // logo
+            const logoInput = document.getElementById("header-logo-file");
             const file = logoInput.files[0];
-            const headerText = headerTextInput.value;
-            const headerSubTextInput = document.querySelector("input[name='headersubtext']");
-            const headerSubText = headerSubTextInput.value;
 
             // Nur PNG zulassen
-
-            if (file && file.type === "image/png"){
+            if (file && file.type === "image/png") {
                 pngToBase64(file, function(base64String) {
                     if (base64String) {
                         // Logo als src setzen
                         document.getElementById("header-img").src = base64String;
-                        // Optional: Variable speichern (falls benötigt)
+                        // Variable speichern
                         window.headerLogoNew = base64String;
                     } else {
                         alert("Fehler beim Verarbeiten des Bildes!");
                     }
-                    });
-            }
-            else if (file && file.type !== "image/png"){
+                });
+            } else if (file && file.type !== "image/png") {
                 alert("Nur PNGs Erlaubt!");
             }
-            if(headerText){
+
+            const headerTitleInput = document.querySelector("input[name='headertitle']");
+            const headerTitle = headerTitleInput.value;
+
+            if(headerTitle){
                 // Headertext aktualisieren
-                document.querySelector(".prev-header-text").textContent = headerText;
+                document.querySelector(".prev-header-text").textContent = headerTitle;
 
                 // header text speichern
-                window.headerText = headerText;
+                window.headerTitle = headerTitle;
             }
+            const headerSubTextInput = document.querySelector("input[name='headersubtext']");
+            const headerSubText = headerSubTextInput.value;
+
             if(headerSubText){
                 document.querySelector(".prev-header-sub-text").textContent = headerSubText;
 
                 window.headerSubText = headerSubText;
             }
-
-            // Modal schließen
-            document.getElementById("header-modal").style.display = "none";
-
         }
 
-        // Asynchrone Funktion mit Callback!
+
+    // Asynchrone Funktion mit Callback!
         function pngToBase64(file, callback) {
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -996,94 +956,96 @@
             reader.readAsDataURL(file);
         }
 
-        // Formular als HTML herunterladen
+
+    // Formular als HTML herunterladen
         function downloadForm() {
             // Formular-HTML erstellen
-            let formHTML = `
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erstelltes Formular        </div>
-</title>
-    <style>
-        .header-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+            let formHTML = 
+            `
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Erstelltes Formular        </div>
+                </title>
+                    <style>
+                        .header-container {
+                            background-color: white;
+                            border-radius: 8px;
+                            padding: 20px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                            margin-bottom: 20px;
+                        }
 
-        .prev-header-content {
-            column-count: 2;
-        }
+                        .prev-header-content {
+                            column-count: 2;
+                        }
 
-        .header-sub-text{
-            text-align: center;
-        }
+                        .header-sub-text{
+                            text-align: center;
+                        }
 
-        .prev-header-logo {
-            float: left;
-            width: 150px;
-            height: 150px;
-            margin-right: 15px;
-        }
+                        .prev-header-logo {
+                            float: left;
+                            width: 150px;
+                            height: 150px;
+                            margin-right: 15px;
+                        }
 
-        .prev-header-text {
-            float: left;
-            text-align: left;
-        }
+                        .prev-header-text {
+                            float: left;
+                            text-align: left;
+                        }
 
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-element {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .radio-group label, .checkbox-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<header>
-    <div class="header-container" id="header-container">
-        <div class="prev-header-content">
-            <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
-            <div class="prev-header-text"><h1>${window.headerText}</h1></div>
-        </div>
-        <div class="header-sub-text"><h3>${window.headerSubText}</h3></div>
-    </div>
-</header>
-<body>
-    <form id="generated-form">
-`;
+                        body {
+                            font-family: Arial, sans-serif;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .form-element {
+                            margin-bottom: 15px;
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                        }
+                        input, textarea, select {
+                            width: 100%;
+                            padding: 8px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        .radio-group label, .checkbox-group label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: normal;
+                        }
+                        .submit-btn {
+                            background-color: #4CAF50;
+                            color: white;
+                            padding: 10px 15px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <header>
+                    <div class="header-container" id="header-container">
+                        <div class="prev-header-content">
+                            <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
+                            <div class="prev-header-text"><h1>${window.headerTitle}</h1></div>
+                        </div>
+                        <div class="header-sub-text"><h3>${window.headerSubText}</h3></div>
+                    </div>
+                </header>
+                <body>
+                    <form id="generated-form">
+                `;
             
             // Alle Formularelemente durchgehen
             const formElements = formContainer.querySelectorAll('.form-element');
@@ -1113,110 +1075,111 @@
                 
                 formHTML += `        </div>`;
             });
-            
+
             // Submit-Button hinzufügen
-            formHTML += `
-<div class="form-element">
-        </div>
-    </form>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('generated-form');
-    const downloadButton = document.createElement('button');
-    
-    // Download-Button erstellen und stylen
-    downloadButton.textContent = 'Formular als JSON herunterladen';
-    downloadButton.type = 'button';
-    downloadButton.className = 'submit-btn';
-    downloadButton.style.backgroundColor = '#2196F3';
-    downloadButton.style.marginTop = '10px';
-    
-    // Download-Button nach dem Formular einfügen
-    form.parentNode.insertBefore(downloadButton, form.nextSibling);
-    
-    // Funktion zum Sammeln der Formulardaten
-    function collectFormData() {
-        const formData = {};
-        const formElements = form.querySelectorAll('.form-element');
-        
-        formElements.forEach(element => {
-            const labelElement = element.querySelector('label');
-            if (!labelElement) return;
-            
-            const labelText = labelElement.textContent.replace(/[:-]\d+$/, '').trim();
-            const inputElements = element.querySelectorAll('input, textarea, select');
-            
-            if (inputElements.length === 1) {
-                // Einzelnes Input-Element
-                const input = inputElements[0];
-                let value = '';
-                
-                if (input.type === 'checkbox') {
-                    value = input.checked;
-                } else if (input.type === 'radio') {
-                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
-                    value = selectedRadio ? selectedRadio.value : '';
-                } else if (input.tagName === 'SELECT') {
-                    value = input.value;
-                } else {
-                    value = input.value;
-                }
-                
-                if (labelText && (value !== '' || input.type === 'checkbox')) {
-                    formData[labelText] = value;
-                }
-            } else if (inputElements.length > 1) {
-                // Mehrere Input-Elemente (Radio-Buttons, Checkboxen)
-                if (element.querySelector('input[type="radio"]')) {
-                    // Radio-Buttons - nur der ausgewählte Wert
-                    const selectedRadio = element.querySelector('input[type="radio"]:checked');
-                    if (selectedRadio) {
-                        formData[labelText] = selectedRadio.value;
-                    }
-                } else if (element.querySelector('input[type="checkbox"]')) {
-                    // Checkboxen - Array aller ausgewählten Werte
-                    const checkedBoxes = element.querySelectorAll('input[type="checkbox"]:checked');
-                    const values = Array.from(checkedBoxes).map(cb => cb.value);
-                    if (values.length > 0) {
-                        formData[labelText] = values;
-                    }
-                }
-            }
-        });
-        
-        return formData;
-    }
-    
-    // Funktion zum Herunterladen der JSON-Daten
-    function downloadJSON() {
-        const formData = collectFormData();
-        const jsonString = JSON.stringify(formData, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'formular-daten.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-    
-    // Event-Listener für den Download-Button
-    downloadButton.addEventListener('click', downloadJSON);
-    
-    // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        downloadJSON();
-    });
-});
-<\/script>
-        <\/body>
-        <\/html>
-`
-;
+            formHTML += 
+            `
+                    <div class="form-element">
+                        <button type="submit" class="submit-btn">Absenden</button>
+                    </div>
+                </form>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const form = document.getElementById('generated-form');
+                        const downloadButton = document.createElement('button');
+
+                        // Download-Button erstellen und stylen
+                        downloadButton.textContent = 'Formular als JSON herunterladen';
+                        downloadButton.type = 'button';
+                        downloadButton.className = 'submit-btn';
+                        downloadButton.style.backgroundColor = '#2196F3';
+                        downloadButton.style.marginTop = '10px';
+
+                        // Download-Button nach dem Formular einfügen
+                        form.parentNode.insertBefore(downloadButton, form.nextSibling);
+
+                        // Funktion zum Sammeln der Formulardaten
+                        function collectFormData() {
+                            const formData = {};
+                            const formElements = form.querySelectorAll('.form-element');
+
+                            formElements.forEach(element => {
+                                const labelElement = element.querySelector('label');
+                                if (!labelElement) return;
+
+                                const labelText = labelElement.textContent.replace(/[:-]\\d+$/, '').trim();
+                                const inputElements = element.querySelectorAll('input, textarea, select');
+
+                                if (inputElements.length === 1) {
+                                    // Einzelnes Input-Element
+                                    const input = inputElements[0];
+                                    let value = '';
+
+                                    if (input.type === 'checkbox') {
+                                        value = input.checked;
+                                    } else if (input.type === 'radio') {
+                                        const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                                        value = selectedRadio ? selectedRadio.value : '';
+                                    } else if (input.tagName === 'SELECT') {
+                                        value = input.value;
+                                    } else {
+                                        value = input.value;
+                                    }
+
+                                    if (labelText && (value !== '' || input.type === 'checkbox')) {
+                                        formData[labelText] = value;
+                                    }
+                                } else if (inputElements.length > 1) {
+                                    // Mehrere Input-Elemente (Radio-Buttons, Checkboxen)
+                                    if (element.querySelector('input[type="radio"]')) {
+                                        // Radio-Buttons - nur der ausgewählte Wert
+                                        const selectedRadio = element.querySelector('input[type="radio"]:checked');
+                                        if (selectedRadio) {
+                                            formData[labelText] = selectedRadio.value;
+                                        }
+                                    } else if (element.querySelector('input[type="checkbox"]')) {
+                                        // Checkboxen - Array aller ausgewählten Werte
+                                        const checkedBoxes = element.querySelectorAll('input[type="checkbox"]:checked');
+                                        const values = Array.from(checkedBoxes).map(cb => cb.value);
+                                        if (values.length > 0) {
+                                            formData[labelText] = values;
+                                        }
+                                    }
+                                }
+                            });
+
+                            return formData;
+                        }
+
+                        // Funktion zum Herunterladen der JSON-Daten
+                        function downloadJSON() {
+                            const formData = collectFormData();
+                            const jsonString = JSON.stringify(formData, null, 2);
+                            const blob = new Blob([jsonString], { type: 'application/json' });
+                            const url = URL.createObjectURL(blob);
+
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'formular-daten.json';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        }
+
+                        // Event-Listener für den Download-Button
+                        downloadButton.addEventListener('click', downloadJSON);
+
+                        // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            downloadJSON();
+                        });
+                    });
+                <\/script>
+            </body>
+            </html>`;
+
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
@@ -1227,6 +1190,142 @@ document.addEventListener('DOMContentLoaded', function() {
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+
+    // Snapshotfunktion
+        // Snapshot-Funktion - Download als JSON-Vorlage
+        function downloadSnapshot(){
+            // Formular-Daten sammeln
+            const formData = {
+                name: `Formular-Vorlage-${new Date().toLocaleDateString('de-DE')}`,
+                timestamp: new Date().toISOString(),
+                header: {
+                    logo: window.headerLogoNew || '',
+                    text: window.headerTitle || '- PlaceHolder -',
+                    subText: window.headerSubText || '- SUB PLACEHOLDER -'
+                },
+                elements: []
+            };
+
+            // Alle Formularelemente durchgehen
+            const formElements = formContainer.querySelectorAll('.form-element');
+            formElements.forEach(element => {
+                const elementData = {
+                    id: element.id,
+                    type: element.dataset.type,
+                    label: element.querySelector('label').textContent.replace(':', ''),
+                    options: element.dataset.options ? JSON.parse(element.dataset.options) : []
+                };
+                formData.elements.push(elementData);
+            });
+
+            // JSON-String erstellen
+            const jsonString = JSON.stringify(formData, null, 2);
+
+            // Datei herunterladen
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `formular-vorlage-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('Vorlage wurde erfolgreich heruntergeladen!');
+        }
+
+        // Vorlage importieren
+        function importTemplate(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const templateData = JSON.parse(e.target.result);
+                    loadTemplate(templateData);
+                    alert('Vorlage wurde erfolgreich importiert!');
+                } catch (error) {
+                    alert('Fehler beim Importieren der Vorlage: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Vorlage laden
+        function loadTemplate(templateData) {
+            // Bestätigung einholen, falls bereits Inhalte vorhanden sind
+            const hasExistingContent = formContainer.children.length > 0 ||
+                                     (window.headerTitle && window.headerTitle !== '- PlaceHolder -');
+
+            if (hasExistingContent && !confirm('Beim Importieren werden alle aktuellen Inhalte überschrieben. Fortfahren?')) {
+                return;
+            }
+
+            // Formular zurücksetzen
+            formContainer.innerHTML = '';
+            elementCount = 0;
+            elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0};
+
+            // Header wiederherstellen
+            if (templateData.header) {
+                document.getElementById('header-img').src = templateData.header.logo || '';
+                document.querySelector('.prev-header-text').textContent = templateData.header.text || '- PlaceHolder -';
+                document.querySelector('.prev-header-sub-text').textContent = templateData.header.subText || '- SUB PLACEHOLDER -';
+
+                window.headerLogoNew = templateData.header.logo || '';
+                window.headerTitle = templateData.header.text || '- PlaceHolder -';
+                window.headerSubText = templateData.header.subText || '- SUB PLACEHOLDER -';
+            }
+
+            // Formularelemente wiederherstellen
+            if (templateData.elements && templateData.elements.length > 0) {
+                templateData.elements.forEach(elementData => {
+                    restoreFormElement(elementData);
+                });
+            }
+        }
+
+        // Formularelement aus Vorlage wiederherstellen
+        function restoreFormElement(elementData) {
+            const elementId = `element-${elementCount}`;
+            elementCount++;
+
+            // Zähler für diesen Typ erhöhen
+            elementTypeCount[elementData.type]++;
+
+            // Element mit korrekten Werten erstellen
+            let elementHTML = createFormElement(elementData.type, elementId, elementData.label);
+            formContainer.insertAdjacentHTML('beforeend', elementHTML);
+
+            // Optionen setzen, falls vorhanden
+            const element = document.getElementById(elementId);
+            if (elementData.options && elementData.options.length > 0) {
+                element.dataset.options = JSON.stringify(elementData.options);
+
+                // UI-Elemente aktualisieren
+                if (elementData.type === 'dropdown') {
+                    const selectElement = element.querySelector('select');
+                    selectElement.innerHTML = '<option value="">Bitte auswählen</option>' +
+                        elementData.options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('');
+                } else if (elementData.type === 'radio') {
+                    const radioGroup = element.querySelector('.radio-group');
+                    radioGroup.innerHTML = elementData.options.map((option, index) => `
+                        <label><input type="radio" name="${elementId}" value="option${index+1}"> ${option}</label>
+                    `).join('');
+                } else if (elementData.type === 'checkbox') {
+                    const checkboxGroup = element.querySelector('.checkbox-group');
+                    checkboxGroup.innerHTML = elementData.options.map((option, index) => `
+                        <label><input type="checkbox" name="${elementId}" value="option${index+1}"> ${option}</label>
+                    `).join('');
+                }
+            }
         }
     </script>
 </body>
