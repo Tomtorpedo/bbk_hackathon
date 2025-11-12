@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formular-Editor</title>
     <style>
-        /* Dein bestehendes CSS bleibt unverändert */
         * {
             box-sizing: border-box;
             font-family: Arial, sans-serif;
@@ -227,6 +226,7 @@
             background-color: #0b7dda;
         }
         
+        /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
@@ -429,22 +429,6 @@
         </div>
     </div>
 
-    <!-- Modal für Header Edit -->
-    <div class="modal" id="header-modal">
-        <div class="modal-content">
-            <h2>Logo hochladen</h2>
-            <input type="file" id="header-logo-input" accept="image/png" required>
-            <h2>Header Text</h2>
-            <input type="text" name="headertext" placeholder="headertext" size="30" required>
-            <h2>Sub Text</h2>
-            <input type="text" name="headersubtext" placeholder="headersubtext" size="30" required>
-            <div class="modal-buttons">
-                <button type="button" class="modal-btn cancel-btn" id="header-cancel-btn">Abbrechen</button>
-                <button type="button" class="modal-btn confirm-btn" id="header-confirm-btn">Speichern</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal für Elementtyp-Auswahl -->
     <div class="modal" id="element-modal">
         <div class="modal-content">
@@ -493,8 +477,7 @@
         let newlyAddedElement = null;
         let elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0}
         
-        // DOM-Elemente
-        const headerModal = document.getElementById('header-modal');
+    // DOM-Elemente
         const formContainer = document.getElementById('form-container');
         const downloadBtn = document.getElementById('download-btn');
         const elementModal = document.getElementById('element-modal');
@@ -514,7 +497,6 @@
         const addHeaderLogoBtn = document.getElementById('add-header-logo-btn');
 
         // Event-Listener
-        addElementBtn.addEventListener('click', openElementModal);
         cancelBtn.addEventListener('click', closeElementModal);
         confirmBtn.addEventListener('click', addFormElement);
         downloadBtn.addEventListener('click', downloadForm);
@@ -525,17 +507,10 @@
         snapshotBtn.addEventListener('click', downloadSnapshot);
         importBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', importTemplate);
-        
+        addHeaderLogoBtn.addEventListener('click', editHeader);
+
+
     // Modal-Funktionen
-        function openHeaderModal() {
-            headerModal.style.display = 'block';
-        }       
-        function closeHeaderModal() {
-            headerModal.style.display = 'none';
-        }       
-        function openElementModal() {
-            elementModal.style.display = 'block';
-        }       
         function closeElementModal() {
             elementModal.style.display = 'none';
         }
@@ -566,7 +541,7 @@
             }
             
             editModal.style.display = 'block';
-        }      
+        }
         function closeEditModal() {
             editModal.style.display = 'none';
             currentEditElement = null;
@@ -577,15 +552,15 @@
         function dragstartHandler(ev) {
             ev.dataTransfer.setData("text", ev.target.id);
         }
-        
+
         function dragoverHandler(ev) {
             ev.preventDefault();
         }
-        
+
         function dropHandler(ev) {
             ev.preventDefault();
             let data = ev.dataTransfer.getData("text");
-            
+
             // Zuerst Zähler erhöhen, dann Element erstellen
             let elementType = '';
             switch(data) {
@@ -622,17 +597,17 @@
                     elementType = 'checkbox';
                     break;
             }
-            
+
             const elementId = 'element-' + elementCount;
             elementCount++;
             
             // Element mit korrekten Werten erstellen
             let elementHTML = createFormElement(elementType, elementId);
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
-
+            
             // Neues Element speichern und Bearbeitungsdialog öffnen
             newlyAddedElement = document.getElementById(elementId);
-
+            
             // Automatisch Bearbeitungsdialog öffnen
             setTimeout(() => {
                 openEditModal(elementId);
@@ -643,7 +618,7 @@
         // Zentrale Funktion zur Elementerstellung
         function createFormElement(type, id, customLabel = null) {
             let label, value, placeholder, options;
-            
+
             switch(type) {
                 case 'text':
                     label = customLabel || `Textfeld-${elementTypeCount.text}`;
@@ -659,7 +634,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'textarea':
                     label = customLabel || `Textbereich-${elementTypeCount.textarea}`;
                     value = label;
@@ -674,7 +649,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'email':
                     label = customLabel || `E-Mail-${elementTypeCount.email}`;
                     value = `beispiel${elementTypeCount.email}@email.com`;
@@ -689,7 +664,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'number':
                     label = customLabel || `Zahl-${elementTypeCount.number}`;
                     value = elementTypeCount.number;
@@ -704,7 +679,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'date':
                     label = customLabel || `Datum-${elementTypeCount.date}`;
                     const today = new Date().toISOString().split('T')[0];
@@ -718,7 +693,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'dropdown':
                     label = customLabel || `Auswahlmenü-${elementTypeCount.dropdown}`;
                     options = ['Option 1', 'Option 2', 'Option 3'];
@@ -735,7 +710,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'radio':
                     label = customLabel || `Single-Choice-${elementTypeCount.radio}`;
                     options = ['Option 1', 'Option 2', 'Option 3'];
@@ -753,7 +728,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                 case 'checkbox':
                     label = customLabel || `Multiple-Choice-${elementTypeCount.checkbox}`;
                     options = ['Option 1', 'Option 2', 'Option 3'];
@@ -771,29 +746,29 @@
                             </div>
                         </div>
                     `;
-                    
+
                 default:
                     return '';
             }
-        }      
-        
+        }
+
         // Formular-Element hinzufügen
         function addFormElement() {
             const elementType = elementTypeSelect.value;
-            
+
             // Zähler erhöhen
             elementTypeCount[elementType]++;
-            
+
             const elementId = 'element-' + elementCount;
             elementCount++;
-            
+
             let elementHTML = createFormElement(elementType, elementId);
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
-            
+
             // Neues Element speichern und Bearbeitungsdialog öffnen
             newlyAddedElement = document.getElementById(elementId);
             closeElementModal();
-            
+
             // Automatisch Bearbeitungsdialog öffnen
             setTimeout(() => {
                 openEditModal(elementId);
@@ -812,7 +787,7 @@
         function addOption() {
             const index = editOptionsList.children.length;
             addOptionToEditList('', index);
-        }  
+        }
         function addOptionToEditList(value, index) {
             const optionItem = document.createElement('div');
             optionItem.className = 'option-item';
@@ -826,7 +801,7 @@
             const newLabel = editLabelInput.value;
             const formElements = formContainer.querySelectorAll('.form-element');
             let validLabel = true;
-            
+
             formElements.forEach(element => {
                 const label = element.querySelector('label').textContent;
                 if ((label === newLabel + ':') && (element.id !== currentEditElement.id)) {
@@ -834,7 +809,7 @@
                     return;
                 }
             });
-            
+
             if (validLabel === false) {
                 document.getElementById("edit-confirm-btn").disabled = true;
             } else {
@@ -884,10 +859,11 @@
             closeEditModal();
         }
 
-    // Header Edit speichern
-        function saveHeaderEdit() {
-            const logoInput = document.getElementById("header-logo-input");
-            const headerTextInput = document.querySelector("input[name='headertext']");
+    // header Logo change
+
+        function editHeader(){
+            // logo
+            const logoInput = document.getElementById("header-logo-file");
             const file = logoInput.files[0];
 
             // Nur PNG zulassen
@@ -905,22 +881,27 @@
             } else if (file && file.type !== "image/png") {
                 alert("Nur PNGs Erlaubt!");
             }
-            
-            if (headerText) {
+
+            const headerTitleInput = document.querySelector("input[name='headertitle']");
+            const headerTitle = headerTitleInput.value;
+
+            if(headerTitle){
                 // Headertext aktualisieren
-                document.querySelector(".prev-header-text").textContent = headerText;
+                document.querySelector(".prev-header-text").textContent = headerTitle;
+
                 // header text speichern
                 window.headerTitle = headerTitle;
             }
-            
-            if (headerSubText) {
+            const headerSubTextInput = document.querySelector("input[name='headersubtext']");
+            const headerSubText = headerSubTextInput.value;
+
+            if(headerSubText){
                 document.querySelector(".prev-header-sub-text").textContent = headerSubText;
+
                 window.headerSubText = headerSubText;
             }
-
-            // Modal schließen
-            document.getElementById("header-modal").style.display = "none";
         }
+
 
     // Asynchrone Funktion mit Callback!
         function pngToBase64(file, callback) {
@@ -934,89 +915,96 @@
             reader.readAsDataURL(file);
         }
 
+
     // Formular als HTML herunterladen
         function downloadForm() {
             // Formular-HTML erstellen
-            let formHTML =
+            let formHTML = 
             `
-            <!DOCTYPE html>
-            <html lang="de">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Erstelltes Formular</title>
-                <style>
-                    .header-container {
-                        background-color: white;
-                        border-radius: 8px;
-                        padding: 20px;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        margin-bottom: 20px;
-                    }
-                    .prev-header-content {
-                        column-count: 2;
-                    }
-                    .header-sub-text{
-                        text-align: center;
-                    }
-                    .prev-header-logo {
-                        float: left;
-                        width: 150px;
-                        height: 150px;
-                        margin-right: 15px;
-                    }
-                    .prev-header-text {
-                        float: left;
-                        text-align: left;
-                    }
-                    body {
-                        font-family: Arial, sans-serif;
-                        max-width: 600px;
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
-                    .form-element {
-                        margin-bottom: 15px;
-                    }
-                    label {
-                        display: block;
-                        margin-bottom: 5px;
-                        font-weight: bold;
-                    }
-                    input, textarea, select {
-                        width: 100%;
-                        padding: 8px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                    }
-                    .radio-group label, .checkbox-group label {
-                        display: block;
-                        margin-bottom: 5px;
-                        font-weight: normal;
-                    }
-                    .submit-btn {
-                        background-color: #4CAF50;
-                        color: white;
-                        padding: 10px 15px;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-weight: bold;
-                    }
-                </style>
-            </head>
-            <header>
-                <div class="header-container" id="header-container">
-                    <div class="prev-header-content">
-                        <div class="header-logo"><img id="header-img" src="${window.headerLogoNew || ''}" alt="LOGO" width="150px" height="150px"></div>
-                        <div class="prev-header-text"><h1>${window.headerText || '- PlaceHolder -'}</h1></div>
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Erstelltes Formular        </div>
+                </title>
+                    <style>
+                        .header-container {
+                            background-color: white;
+                            border-radius: 8px;
+                            padding: 20px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                            margin-bottom: 20px;
+                        }
+
+                        .prev-header-content {
+                            column-count: 2;
+                        }
+
+                        .header-sub-text{
+                            text-align: center;
+                        }
+
+                        .prev-header-logo {
+                            float: left;
+                            width: 150px;
+                            height: 150px;
+                            margin-right: 15px;
+                        }
+
+                        .prev-header-text {
+                            float: left;
+                            text-align: left;
+                        }
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .form-element {
+                            margin-bottom: 15px;
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                        }
+                        input, textarea, select {
+                            width: 100%;
+                            padding: 8px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        .radio-group label, .checkbox-group label {
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: normal;
+                        }
+                        .submit-btn {
+                            background-color: #4CAF50;
+                            color: white;
+                            padding: 10px 15px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <header>
+                    <div class="header-container" id="header-container">
+                        <div class="prev-header-content">
+                            <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
+                            <div class="prev-header-text"><h1>${window.headerTitle}</h1></div>
+                        </div>
+                        <div class="header-sub-text"><h3>${window.headerSubText}</h3></div>
                     </div>
-                    <div class="header-sub-text"><h3>${window.headerSubText || '- SUB PLACEHOLDER -'}</h3></div>
-                </div>
-            </header>
-            <body>
-                <form id="generated-form">
-            `;
+                </header>
+                <body>
+                    <form id="generated-form">
+                `;
             
             // Alle Formularelemente durchgehen
             const formElements = formContainer.querySelectorAll('.form-element');
@@ -1044,9 +1032,9 @@
                 
                 formHTML += `        </div>`;
             });
-            
+
             // Submit-Button hinzufügen
-            formHTML +=
+            formHTML += 
             `
                     <div class="form-element">
                         <button type="submit" class="submit-btn">Absenden</button>
@@ -1056,34 +1044,34 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const form = document.getElementById('generated-form');
                         const downloadButton = document.createElement('button');
-                        
+
                         // Download-Button erstellen und stylen
                         downloadButton.textContent = 'Formular als JSON herunterladen';
                         downloadButton.type = 'button';
                         downloadButton.className = 'submit-btn';
                         downloadButton.style.backgroundColor = '#2196F3';
                         downloadButton.style.marginTop = '10px';
-                        
+
                         // Download-Button nach dem Formular einfügen
                         form.parentNode.insertBefore(downloadButton, form.nextSibling);
-                        
+
                         // Funktion zum Sammeln der Formulardaten
                         function collectFormData() {
                             const formData = {};
                             const formElements = form.querySelectorAll('.form-element');
-                            
+
                             formElements.forEach(element => {
                                 const labelElement = element.querySelector('label');
                                 if (!labelElement) return;
-                                
+
                                 const labelText = labelElement.textContent.replace(/[:-]\\d+$/, '').trim();
                                 const inputElements = element.querySelectorAll('input, textarea, select');
-                                
+
                                 if (inputElements.length === 1) {
                                     // Einzelnes Input-Element
                                     const input = inputElements[0];
                                     let value = '';
-                                    
+
                                     if (input.type === 'checkbox') {
                                         value = input.checked;
                                     } else if (input.type === 'radio') {
@@ -1094,7 +1082,7 @@
                                     } else {
                                         value = input.value;
                                     }
-                                    
+
                                     if (labelText && (value !== '' || input.type === 'checkbox')) {
                                         formData[labelText] = value;
                                     }
@@ -1116,17 +1104,17 @@
                                     }
                                 }
                             });
-                            
+
                             return formData;
                         }
-                        
+
                         // Funktion zum Herunterladen der JSON-Daten
                         function downloadJSON() {
                             const formData = collectFormData();
                             const jsonString = JSON.stringify(formData, null, 2);
                             const blob = new Blob([jsonString], { type: 'application/json' });
                             const url = URL.createObjectURL(blob);
-                            
+
                             const a = document.createElement('a');
                             a.href = url;
                             a.download = 'formular-daten.json';
@@ -1135,10 +1123,10 @@
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
                         }
-                        
+
                         // Event-Listener für den Download-Button
                         downloadButton.addEventListener('click', downloadJSON);
-                        
+
                         // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
                         form.addEventListener('submit', function(event) {
                             event.preventDefault();
@@ -1148,7 +1136,7 @@
                 <\/script>
             </body>
             </html>`;
-            
+
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
@@ -1161,21 +1149,22 @@
             URL.revokeObjectURL(url);
         }
 
+
     // Snapshotfunktion
         // Snapshot-Funktion - Download als JSON-Vorlage
-        function downloadSnapshot() {
+        function downloadSnapshot(){
             // Formular-Daten sammeln
             const formData = {
                 name: `Formular-Vorlage-${new Date().toLocaleDateString('de-DE')}`,
                 timestamp: new Date().toISOString(),
                 header: {
                     logo: window.headerLogoNew || '',
-                    text: window.headerText || '- PlaceHolder -',
+                    text: window.headerTitle || '- PlaceHolder -',
                     subText: window.headerSubText || '- SUB PLACEHOLDER -'
                 },
                 elements: []
             };
-            
+
             // Alle Formularelemente durchgehen
             const formElements = formContainer.querySelectorAll('.form-element');
             formElements.forEach(element => {
@@ -1187,10 +1176,10 @@
                 };
                 formData.elements.push(elementData);
             });
-            
+
             // JSON-String erstellen
             const jsonString = JSON.stringify(formData, null, 2);
-            
+
             // Datei herunterladen
             const blob = new Blob([jsonString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -1201,15 +1190,15 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
+
             alert('Vorlage wurde erfolgreich heruntergeladen!');
         }
-        
+
         // Vorlage importieren
         function importTemplate(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
@@ -1221,37 +1210,37 @@
                 }
             };
             reader.readAsText(file);
-            
+
             // Reset file input
             event.target.value = '';
         }
-        
+
         // Vorlage laden
         function loadTemplate(templateData) {
             // Bestätigung einholen, falls bereits Inhalte vorhanden sind
-            const hasExistingContent = formContainer.children.length > 0 || 
-                                     (window.headerText && window.headerText !== '- PlaceHolder -');
-            
+            const hasExistingContent = formContainer.children.length > 0 ||
+                                     (window.headerTitle && window.headerTitle !== '- PlaceHolder -');
+
             if (hasExistingContent && !confirm('Beim Importieren werden alle aktuellen Inhalte überschrieben. Fortfahren?')) {
                 return;
             }
-            
+
             // Formular zurücksetzen
             formContainer.innerHTML = '';
             elementCount = 0;
             elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0};
-            
+
             // Header wiederherstellen
             if (templateData.header) {
                 document.getElementById('header-img').src = templateData.header.logo || '';
                 document.querySelector('.prev-header-text').textContent = templateData.header.text || '- PlaceHolder -';
                 document.querySelector('.prev-header-sub-text').textContent = templateData.header.subText || '- SUB PLACEHOLDER -';
-                
+
                 window.headerLogoNew = templateData.header.logo || '';
-                window.headerText = templateData.header.text || '- PlaceHolder -';
+                window.headerTitle = templateData.header.text || '- PlaceHolder -';
                 window.headerSubText = templateData.header.subText || '- SUB PLACEHOLDER -';
             }
-            
+
             // Formularelemente wiederherstellen
             if (templateData.elements && templateData.elements.length > 0) {
                 templateData.elements.forEach(elementData => {
@@ -1259,28 +1248,28 @@
                 });
             }
         }
-        
+
         // Formularelement aus Vorlage wiederherstellen
         function restoreFormElement(elementData) {
             const elementId = `element-${elementCount}`;
             elementCount++;
-            
+
             // Zähler für diesen Typ erhöhen
             elementTypeCount[elementData.type]++;
-            
+
             // Element mit korrekten Werten erstellen
             let elementHTML = createFormElement(elementData.type, elementId, elementData.label);
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
-            
+
             // Optionen setzen, falls vorhanden
             const element = document.getElementById(elementId);
             if (elementData.options && elementData.options.length > 0) {
                 element.dataset.options = JSON.stringify(elementData.options);
-                
+
                 // UI-Elemente aktualisieren
                 if (elementData.type === 'dropdown') {
                     const selectElement = element.querySelector('select');
-                    selectElement.innerHTML = '<option value="">Bitte auswählen</option>' + 
+                    selectElement.innerHTML = '<option value="">Bitte auswählen</option>' +
                         elementData.options.map((option, index) => `<option value="option${index+1}">${option}</option>`).join('');
                 } else if (elementData.type === 'radio') {
                     const radioGroup = element.querySelector('.radio-group');
