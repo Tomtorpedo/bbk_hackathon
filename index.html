@@ -551,7 +551,9 @@
             editLabelInput.value = label.textContent.replace(':', '');
 
             const description = currentEditElement.querySelector('small');
+            if (description!=null) {
             editDescriptionInput.value = description.textContent;
+            }
             
             // Optionen anzeigen, falls vorhanden
             const elementType = currentEditElement.dataset.type;
