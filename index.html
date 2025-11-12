@@ -285,7 +285,7 @@
             color: #333;
         }
         .modal label {
-            display: block;
+            display: inline-flex;
             margin-top: 10px;
             margin-bottom: 5px;
             font-weight: bold;
@@ -609,6 +609,7 @@
             <input type="text" id="edit-label" placeholder="Frage eingeben">
             <label for="edit-description">Beschreibung:</label>
             <input type="text" id="edit-description" placeholder="Beschreibung eingeben">
+                <label for="is-required"><input type="checkbox" id="is-required"><span>Pflichtfeld</span></label>
             <div id="edit-options-container" style="display: none;">
                 <label>Optionen:</label>
                 <div id="edit-options-list">
@@ -650,6 +651,7 @@
         const editConfirmBtn = document.getElementById('edit-confirm-btn');
         const editLabelInput = document.getElementById('edit-label');
         const editDescriptionInput = document.getElementById('edit-description');
+        let isRequiredInput = document.getElementById('is-required');
         const editOptionsContainer = document.getElementById('edit-options-container');
         const editOptionsList = document.getElementById('edit-options-list');
         const addOptionBtn = document.getElementById('add-option-btn');
@@ -796,7 +798,7 @@
                         <div class="form-element" id="${id}" data-type="text">
                             <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <input type="text" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="">
+                            <input type="text" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="" >
                             <div class="element-actions">
                                 <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
                                 <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
@@ -1011,6 +1013,14 @@
 
             // Optionen aktualisieren, falls vorhanden
             const elementType = currentEditElement.dataset.type;
+
+            if (elementType != 'dropdown' && elementType != 'radio' && elementType != 'checkbox') {
+                let requirement = isRequiredInput.checked
+                const testElement= currentEditElement.querySelector('input');
+                testElement.setAttribute("required",requirement);
+                console.log(requirement);
+            }
+            
             
             if (elementType === 'dropdown' || elementType === 'radio' || elementType === 'checkbox') {
                 const optionInputs = editOptionsList.querySelectorAll('input');
@@ -1119,11 +1129,20 @@
                             margin-bottom: 20px;
                         }
 
+                        .header-logo {
+                            width: 100%;
+                        }
+
                         .prev-header-content {
                             column-count: 2;
+                            position: relative;
                         }
 
                         .header-sub-text{
+                            position: absolute;
+                            top: 35px;
+                            left: 50%;
+                            transform: translate(-50%);
                             text-align: center;
                         }
 
@@ -1135,8 +1154,11 @@
                         }
 
                         .prev-header-text {
-                            float: left;
-                            text-align: left;
+                            position: absolute;
+                            bottom: 25%;
+                            left: 50%;
+                            transform: translate(-50%,25%);
+                            text-align: center;
                         }
 
                         body {
@@ -1221,23 +1243,12 @@
             formHTML += 
             `
                     <div class="form-element">
-                        <button type="submit" class="submit-btn">Absenden</button>
+                        <button type="submit" class="submit-btn">JSON Herunterladen</button>
                     </div>
                 </form>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         const form = document.getElementById('generated-form');
-                        const downloadButton = document.createElement('button');
-
-                        // Download-Button erstellen und stylen
-                        downloadButton.textContent = 'Formular als JSON herunterladen';
-                        downloadButton.type = 'button';
-                        downloadButton.className = 'submit-btn';
-                        downloadButton.style.backgroundColor = '#2196F3';
-                        downloadButton.style.marginTop = '10px';
-
-                        // Download-Button nach dem Formular einfügen
-                        form.parentNode.insertBefore(downloadButton, form.nextSibling);
 
                         // Funktion zum Sammeln der Formulardaten
                         function collectFormData() {
@@ -1248,7 +1259,7 @@
                                 const labelElement = element.querySelector('label');
                                 if (!labelElement) return;
 
-                                const labelText = labelElement.textContent.replace(/[:-]\\d+$/, '').trim();
+                                const labelText = labelElement.textContent.replace(/[:-]\d+$/, '').trim();
                                 const inputElements = element.querySelectorAll('input, textarea, select');
 
                                 if (inputElements.length === 1) {
@@ -1307,16 +1318,19 @@
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
                         }
-
-                        // Event-Listener für den Download-Button
-                        downloadButton.addEventListener('click', downloadJSON);
-
-                        // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
                         form.addEventListener('submit', function(event) {
                             event.preventDefault();
                             downloadJSON();
                         });
                     });
+
+                    const form = document.getElementById('generated-form');
+                    form.addEventListener("change", () => {
+                        if (!form.checkValidity()) {
+                            document.getElementById('submitBtn').disabled = true;
+                        }
+                        document.getElementById('submitBtn').disabled = false;
+});     
                 <\/script>
             <\/body>
             <\/html>`;

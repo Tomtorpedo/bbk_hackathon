@@ -15,11 +15,20 @@
                             margin-bottom: 20px;
                         }
 
+                        .header-logo {
+                            width: 100%;
+                        }
+
                         .prev-header-content {
                             column-count: 2;
+                            position: relative;
                         }
 
                         .header-sub-text{
+                            position: absolute;
+                            top: 5%;
+                            left: 50%;
+                            transform: translate(-50%);
                             text-align: center;
                         }
 
@@ -31,8 +40,11 @@
                         }
 
                         .prev-header-text {
-                            float: left;
-                            text-align: left;
+                            position: absolute;
+                            bottom: 25%;
+                            left: 50%;
+                            transform: translate(-50%,25%);
+                            text-align: center;
                         }
 
                         body {
@@ -128,7 +140,7 @@
                     </div>
         </div>
                     <div class="form-element">
-                        <button type="submit" id="submitBtn" class="submit-btn">Absenden</button>
+                        <button type="submit" id="submitBtn" class="submit-btn">JSON Herunterladen</button>
                     </div>
                 </form>
                 <script>
