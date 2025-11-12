@@ -30,9 +30,24 @@
         .form-container {
             background-color: white;
             border-radius: 8px;
-            padding: 20px;
-            box-shadow: 5px 5px 10px 1px #494949;
-            margin-bottom: 20px;
+        }
+
+        .form-container {
+            padding: 10px;
+            margin-bottom: 0px;
+        }
+
+        .insert-div {
+            position: relative;
+            background-color: rgba(161, 255, 189, 0.623);
+            height: 100px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 10px;
+            border-radius: 10px;
+            border: 1px dotted black;
         }
 
         header {
@@ -41,7 +56,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .tool-header {
@@ -70,8 +84,6 @@
             z-index: 1100;
             border-radius: 10px;
             background-color: rgba(255, 233, 233, 0.66);
-            outline: 5px solid rgba(3, 121, 252, 0.69);
-            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .prev-container {
@@ -84,15 +96,12 @@
             z-index: 1200;
             border-radius: 10px;
             background-color: rgba(255, 233, 233, 0.66);
-            outline: 5px solid rgba(3, 121, 252, 0.69);
-            box-shadow: 5px 5px 10px 1px #494949;
         }
 
         .prev-header {
             background-color: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 5px 5px 10px 1px #494949;
             margin-bottom: 20px;
             display: grid;
             grid-template-columns: 200px auto;
@@ -106,8 +115,7 @@
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
             padding: 5px;
-            border-radius: 10px;
-            box-shadow: 5px 5px 10px 1px #494949;
+            border-radius: 8px;
         }
 
         .Drag-and-Drop-Container {
@@ -117,8 +125,21 @@
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
-            box-shadow: 5px 5px 10px 1px #494949;
-            border-radius: 10px;
+            border-radius: 8px;
+        }
+        .newElement {
+            margin: 5px;
+            padding: 3px;
+            color: white;
+            background-color: #45a049;
+            border-radius: 4px;
+            width: 85%;
+        }
+        .export-buttons {
+            background-color: rgba(204, 204, 204, 0.6);
+            margin: 5px;
+            padding: 5px;
+            border-radius: 8px;
         }
 
         .form-element {
@@ -210,7 +231,6 @@
         
         .download-btn:hover {
             background-color: #0b7dda;
-            border: 2px inset #0b72c6;
         }
         
         /* Modal Styling */
@@ -337,7 +357,6 @@
     <dev class="tool-header">
         <dev class="tool-header-logo">LOGO</dev>
         <dev class="tool-header-buttons">
-            <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
         </dev>
     </dev>
 </header>
@@ -349,11 +368,20 @@
                 <div class="action-buttons">
                     <button class="btn header-btn" id="header-btn" type="button">Header bearbeiten</button>
                     <button class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
-
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
-
+                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">Text hinzufügen</div>
+                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">Textblock hinzufügen</div>
+                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">E-Mail hinzufügen</div>
+                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">Zahl hinzufügen</div>
+                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">Datum hinzufügen</div>
+                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">Auswahlmenü hinzufügen</div>
+                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">Single-Choice hinzufügen</div>
+                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">Multiple-Choice hinzufügen</div>
+            </div>
+            <div class="export-buttons">
+                <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
             </div>
         </div>
         <div class="prev-container">
@@ -370,6 +398,7 @@
                 <div class="form-container" id="form-container">
                     <!-- Formularelemente werden hier dynamisch hinzugefügt -->
                 </div>
+                <div class="insert-div" id="insert-div" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"><h2>Neue Elemente hier einfügen</h2></div>
             </div>
         </div>
     </div>
@@ -931,9 +960,9 @@
     <div class="header-container" id="header-container">
         <div class="prev-header-content">
             <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
-            <div class="prev-header-text">${window.headertextnew}</div>
+            <div class="prev-header-text"><h1>${window.headerText}</h1></div>
         </div>
-        <div class="header-sub-text">${window.headerSubText}</div>
+        <div class="header-sub-text"><h3>${window.headerSubText}</h3></div>
     </div>
 </header>
 <body>
