@@ -520,6 +520,16 @@
                     elementTypeCount.checkbox++;
                     break;
             }
+
+            formContainer.insertAdjacentHTML('beforeend', elementHTML);
+            
+            // Neues Element speichern und Bearbeitungsdialog öffnen
+            newlyAddedElement = document.getElementById(elementId);
+            
+            // Automatisch Bearbeitungsdialog öffnen
+            setTimeout(() => {
+                openEditModal(elementId);
+            }, 100);
         }
 
         // Element-Zähler
