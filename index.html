@@ -135,6 +135,9 @@
             border-radius: 4px;
             width: 85%;
         }
+        .newElement:hover {
+            cursor: grab;
+        }
         .export-buttons {
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
@@ -522,7 +525,7 @@
         importBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', importTemplate);
         addHeaderLogoBtn.addEventListener('click', editHeader);
-     
+
         
     // Modal-Funktionen
         function openHeaderModal() {
@@ -533,10 +536,10 @@
         }
         function openElementModal() {
             elementModal.style.display = 'block';
-        }       
+        }
         function closeElementModal() {
             elementModal.style.display = 'none';
-        }       
+        }
         function openEditModal(elementId) {
             currentEditElement = document.getElementById(elementId);
             if (!currentEditElement) return;
@@ -566,7 +569,7 @@
             }
             
             editModal.style.display = 'block';
-        }       
+        }
         function closeEditModal() {
             editModal.style.display = 'none';
             currentEditElement = null;
@@ -626,17 +629,17 @@
             }
 
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
-            
+
             // Neues Element speichern und Bearbeitungsdialog öffnen
             newlyAddedElement = document.getElementById(elementId);
-            
+
             // Automatisch Bearbeitungsdialog öffnen
             setTimeout(() => {
                 openEditModal(elementId);
             }, 100);
         }
-     
-        
+
+
     // Element handling
         // Formular-Element hinzufügen
         function addFormElement() {
@@ -705,7 +708,7 @@
                     </div>
                 </div>
             `;
-        }       
+        }
         function createTextareaElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="textarea">
@@ -717,7 +720,7 @@
                     </div>
                 </div>
             `;
-        }       
+        }
         function createEmailElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="email">
@@ -729,7 +732,7 @@
                     </div>
                 </div>
             `;
-        }       
+        }
         function createNumberElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="number">
@@ -741,7 +744,7 @@
                     </div>
                 </div>
             `;
-        }        
+        }
         function createDateElement(id) {
             return `
                 <div class="form-element" id="${id}" data-type="date">
@@ -753,7 +756,7 @@
                     </div>
                 </div>
             `;
-        }       
+        }
         function createDropdownElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
@@ -769,7 +772,7 @@
                     </div>
                 </div>
             `;
-        }      
+        }
         function createRadioElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
@@ -786,7 +789,7 @@
                     </div>
                 </div>
             `;
-        }      
+        }
         function createCheckboxElement(id) {
             const options = ['Option 1', 'Option 2', 'Option 3'];
             return `
@@ -951,7 +954,7 @@
     // Formular als HTML herunterladen
         function downloadForm() {
             // Formular-HTML erstellen
-            let formHTML = 
+            let formHTML =
             `
                 <!DOCTYPE html>
                 <html lang="de">
@@ -1065,7 +1068,7 @@
                 formHTML += `        </div>`;
             });
             // Submit-Button hinzufügen
-            formHTML += 
+            formHTML +=
             `
             <div class="form-element">
                     </div>
@@ -1074,34 +1077,34 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('generated-form');
                 const downloadButton = document.createElement('button');
-                
+
                 // Download-Button erstellen und stylen
                 downloadButton.textContent = 'Formular als JSON herunterladen';
                 downloadButton.type = 'button';
                 downloadButton.className = 'submit-btn';
                 downloadButton.style.backgroundColor = '#2196F3';
                 downloadButton.style.marginTop = '10px';
-                
+
                 // Download-Button nach dem Formular einfügen
                 form.parentNode.insertBefore(downloadButton, form.nextSibling);
-                
+
                 // Funktion zum Sammeln der Formulardaten
                 function collectFormData() {
                     const formData = {};
                     const formElements = form.querySelectorAll('.form-element');
-                    
+
                     formElements.forEach(element => {
                         const labelElement = element.querySelector('label');
                         if (!labelElement) return;
-                        
+
                         const labelText = labelElement.textContent.replace(/[:-]\d+$/, '').trim();
                         const inputElements = element.querySelectorAll('input, textarea, select');
-                        
+
                         if (inputElements.length === 1) {
                             // Einzelnes Input-Element
                             const input = inputElements[0];
                             let value = '';
-                            
+
                             if (input.type === 'checkbox') {
                                 value = input.checked;
                             } else if (input.type === 'radio') {
@@ -1112,7 +1115,7 @@
                             } else {
                                 value = input.value;
                             }
-                            
+
                             if (labelText && (value !== '' || input.type === 'checkbox')) {
                                 formData[labelText] = value;
                             }
@@ -1134,17 +1137,17 @@
                             }
                         }
                     });
-                    
+
                     return formData;
                 }
-                
+
                 // Funktion zum Herunterladen der JSON-Daten
                 function downloadJSON() {
                     const formData = collectFormData();
                     const jsonString = JSON.stringify(formData, null, 2);
                     const blob = new Blob([jsonString], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);
-                    
+
                     const a = document.createElement('a');
                     a.href = url;
                     a.download = 'formular-daten.json';
@@ -1153,10 +1156,10 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                 }
-                
+
                 // Event-Listener für den Download-Button
                 downloadButton.addEventListener('click', downloadJSON);
-                
+
                 // Optional: Daten auch beim Absenden des Formulars sammeln (verhindert Standard-Submit)
                 form.addEventListener('submit', function(event) {
                     event.preventDefault();
@@ -1178,11 +1181,11 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-    
+
 
     //Snapshoting Funktion
         // Snapshot-Funktion - Download als JSON-Vorlage
-        function downloadSnapshot() 
+        function downloadSnapshot()
         {
         // Formular-Daten sammeln
         const formData = {
@@ -1195,7 +1198,7 @@
         },
         elements: []
     };
-    
+
         // Alle Formularelemente durchgehen
         const formElements = formContainer.querySelectorAll('.form-element');
         formElements.forEach(element => {
@@ -1207,10 +1210,10 @@
         };
         formData.elements.push(elementData);
     });
-    
+
         // JSON-String erstellen
         const jsonString = JSON.stringify(formData, null, 2);
-    
+
         // Datei herunterladen
         const blob = new Blob([jsonString], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -1221,14 +1224,14 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
+
         alert('Vorlage wurde erfolgreich heruntergeladen!');
     }
         // Vorlage importieren
         function importTemplate(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
@@ -1240,36 +1243,36 @@
         }
     };
     reader.readAsText(file);
-    
+
     // Reset file input
     event.target.value = '';
 }
         // Vorlage laden
         function loadTemplate(templateData) {
     // Bestätigung einholen, falls bereits Inhalte vorhanden sind
-    const hasExistingContent = formContainer.children.length > 0 || 
+    const hasExistingContent = formContainer.children.length > 0 ||
                              (window.headerTitle && window.headerTitle !== '- PlaceHolder -');
-    
+
     if (hasExistingContent && !confirm('Beim Importieren werden alle aktuellen Inhalte überschrieben. Fortfahren?')) {
         return;
     }
-    
+
     // Formular zurücksetzen
     formContainer.innerHTML = '';
     elementCount = 0;
     elementTypeCount = {text:0,textarea:0,email:0,number:0,date:0,dropdown:0,radio:0,checkbox:0};
-    
+
     // Header wiederherstellen
     if (templateData.header) {
         document.getElementById('header-img').src = templateData.header.logo || '';
         document.querySelector('.prev-header-text').textContent = templateData.header.text || '- PlaceHolder -';
         document.querySelector('.prev-header-sub-text').textContent = templateData.header.subText || '- SUB PLACEHOLDER -';
-        
+
         window.headerLogoNew = templateData.header.logo || '';
         window.headerTitle = templateData.header.text || '- PlaceHolder -';
         window.headerSubText = templateData.header.subText || '- SUB PLACEHOLDER -';
     }
-    
+
     // Formularelemente wiederherstellen
     if (templateData.elements && templateData.elements.length > 0) {
         templateData.elements.forEach(elementData => {
@@ -1281,10 +1284,10 @@
         function restoreFormElement(elementData) {
     const elementId = `element-${elementCount}`;
     elementCount++;
-    
+
     let elementHTML = '';
     const elementType = elementData.type;
-    
+
     switch(elementType) {
         case 'text':
             elementTypeCount.text++;
@@ -1319,7 +1322,7 @@
             elementHTML = createCheckboxElement(elementId, elementData.label, elementData.options);
             break;
     }
-    
+
     formContainer.insertAdjacentHTML('beforeend', elementHTML);
 }
         // Element-Typen erstellen (angepasst für Vorlagen)
