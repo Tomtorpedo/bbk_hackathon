@@ -447,23 +447,59 @@
                     <input type="text" id="headersubtext" name="headersubtext" placeholder="headersubtext">
                 </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn header-btn" id="add-header-logo-btn">Header Speichern</button>
+                    <button type="button" class="btn header-btn" id="add-header-logo-btn">
+                        <img src="data:image/svg+xml;base64,"  alt="icon">
+                        Header Speichern
+                    </button>
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
-                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">Text hinzufügen</div>
-                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">Textblock hinzufügen</div>
-                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">E-Mail hinzufügen</div>
-                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">Zahl hinzufügen</div>
-                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">Datum hinzufügen</div>
-                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">Auswahlmenü hinzufügen</div>
-                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">Single-Choice hinzufügen</div>
-                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">Multiple-Choice hinzufügen</div>
+                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64," alt="icon">
+                    Text hinzufügen
+                </div>
+                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,"alt="icon">
+                    Textblock hinzufügen
+                </div>
+                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgNmMwLTEuMS0uOS0yLTItMkg0Yy0xLjEgMC0yIC45LTIgMnYxMmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjZ6bS0yIDAtOCA1LTgtNWgxNnptMCAxMkg0VjhsOCA1IDgtNXYxMHoiLz48L3N2Zz4="alt="icon">
+                    E-Mail hinzufügen
+                </div>
+                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxNUg1LjV2LTQuNUg0VjloM3Y2em02LjUtMS41aC0zdi0xaDJjLjU1IDAgMS0uNDUgMS0xVjEwYzAtLjU1LS40NS0xLTEtMUg5djEuNWgzdjFoLTJjLS41NSAwLTEgLjQ1LTEgMVYxNWg0LjV2LTEuNXptNiAuNXYtNGMwLS41NS0uNDUtMS0xLTFIMTV2MS41aDN2MWgtMnYxaDJ2MWgtM1YxNWgzLjVjLjU1IDAgMS0uNDUgMS0xeiIvPjwvc3ZnPg=="alt="icon">
+                    Zahl hinzufügen
+                </div>
+                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxMWgydjJIN3YtMnptMTQtNXYxNGMwIDEuMS0uOSAyLTIgMkg1YTIgMiAwIDAgMS0yLTJsLjAxLTE0YzAtMS4xLjg4LTIgMS45OS0yaDFWMmgydjJoOFYyaDJ2MmgxYzEuMSAwIDIgLjkgMiAyek01IDhoMTRWNkg1djJ6bTE0IDEyVjEwSDV2MTBoMTR6bS00LTdoMnYtMmgtMnYyem0tNCAwaDJ2LTJoLTJ2MnoiLz48L3N2Zz4=" alt="icon">
+                    Datum hinzufügen
+                </div>
+                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgNXYxNEg1VjVoMTRtMC0ySDVjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNWMwLTEuMS0uOS0yLTItMnoiLz48L3N2Zz4=" alt="icon">
+                    Auswahlmenü hinzufügen
+                </div>
+                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMgNy41aDV2MmgtNXptMCA3aDV2MmgtNXpNMTkgM0g1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY1aDE0djE0ek0xMSA2SDZ2NWg1VjZ6bS0xIDRIN1Y3aDN2M3ptMSAzSDZ2NWg1di01em0tMSA0SDd2LTNoM3YzeiIvPjwvc3ZnPg==" alt="icon">
+                    Single-Choice hinzufügen
+                </div>
+                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgN2gtOXYyaDlWN3ptMCA4aC05djJoOXYtMnpNNS41NCAxMSAyIDcuNDZsMS40MS0xLjQxIDIuMTIgMi4xMiA0LjI0LTQuMjQgMS40MSAxLjQxTDUuNTQgMTF6bTAgOEwyIDE1LjQ2bDEuNDEtMS40MSAyLjEyIDIuMTIgNC4yNC00LjI0IDEuNDEgMS40MUw1LjU0IDE5eiIvPjwvc3ZnPg==" alt="icon">
+                    Multiple-Choice hinzufügen
+                </div>
             </div>
             <div class="export-buttons">
-                <button type="button" class="btn download-btn" id="download-btn">Formular herunterladen</button>
-                <button type="button" class="btn snapshot-btn" id="snapshot-btn">Vorlage speichern</button>
-                <button type="button" class="btn import-btn" id="import-btn">Vorlage importieren</button>
+                <button type="button" class="btn download-btn" id="download-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
+                    Formular herunterladen
+                </button>
+                <button type="button" class="btn snapshot-btn" id="snapshot-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
+                    Vorlage speichern
+                </button>
+                <button type="button" class="btn import-btn" id="import-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNOSAxNmg2di02aDRsLTctNy03IDdoNHY2em0zLTEwLjE3TDE0LjE3IDhIMTN2NmgtMlY4SDkuODNMMTIgNS44M3pNNSAxOGgxNHYySDV6Ii8+PC9zdmc+"  alt="icon">
+                    Vorlage importieren
+                </button>
                 <input type="file" id="file-input" class="file-input" accept=".json">
             </div>
         </div>
