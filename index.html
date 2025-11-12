@@ -136,6 +136,9 @@
             border-radius: 4px;
             width: 85%;
         }
+        .newElement:hover {
+            cursor: grab;
+        }
         .export-buttons {
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
@@ -175,7 +178,14 @@
             display: flex;
             gap: 5px;
         }
-        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .edit-btn, .delete-btn {
             border: none;
             border-radius: 4px;
@@ -207,24 +217,7 @@
             justify-content: space-between;
             margin-top: 20px;
         }
-        
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .add-element-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .add-element-btn:hover {
-            background-color: #45a049;
-        }
-        
+
         .download-btn {
             background-color: #2196F3;
             color: white;
@@ -349,6 +342,8 @@
             display: block;
             margin-bottom: 5px;
         }
+
+        /* snapshot Styling */
         .snapshot-btn {
             background-color: #9C27B0;
             color: white;
@@ -369,6 +364,13 @@
         .file-input {
             display: none;
         }
+
+        /* header-edit-container Styling */
+        .header-edit-container input {
+            margin: 5px;
+            width: 90%;
+        }
+
     </style>
 </head>
 
@@ -384,9 +386,13 @@
     <div class="tool-container">
         <div class="editor-container">
             <div class="options-contianer">
+                <div class="header-edit-container">
+                    <input type="file" id="header-logo-file" name="header-logo-file" accept="image/png">
+                    <input type="text" name="headertitle" placeholder="headertitle">
+                    <input type="text" name="headersubtext" placeholder="headersubtext">
+                </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn header-btn" id="header-btn">Header bearbeiten</button>
-                    <button type="button" class="btn add-element-btn" id="add-element-btn">Element hinzufügen</button>
+                    <button type="button" class="btn header-btn" id="add-header-logo-btn">Header Speichern</button>
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
@@ -490,7 +496,6 @@
         // DOM-Elemente
         const headerModal = document.getElementById('header-modal');
         const formContainer = document.getElementById('form-container');
-        const addElementBtn = document.getElementById('add-element-btn');
         const downloadBtn = document.getElementById('download-btn');
         const elementModal = document.getElementById('element-modal');
         const editModal = document.getElementById('edit-modal');
@@ -503,12 +508,10 @@
         const editOptionsContainer = document.getElementById('edit-options-container');
         const editOptionsList = document.getElementById('edit-options-list');
         const addOptionBtn = document.getElementById('add-option-btn');
-        const headerBtn = document.getElementById('header-btn');
-        const headerConfirmBtn = document.getElementById('header-confirm-btn');
-        const headerCancelBtn = document.getElementById('header-cancel-btn');
         const snapshotBtn = document.getElementById('snapshot-btn');
         const importBtn = document.getElementById('import-btn');
         const fileInput = document.getElementById('file-input');
+        const addHeaderLogoBtn = document.getElementById('add-header-logo-btn');
 
         // Event-Listener
         addElementBtn.addEventListener('click', openElementModal);
@@ -519,9 +522,6 @@
         editLabelInput.addEventListener('input', validChange);
         editConfirmBtn.addEventListener('click', saveElementEdit);
         addOptionBtn.addEventListener('click', addOption);
-        headerBtn.addEventListener('click', openHeaderModal);
-        headerCancelBtn.addEventListener('click', closeHeaderModal);
-        headerConfirmBtn.addEventListener('click', saveHeaderEdit);
         snapshotBtn.addEventListener('click', downloadSnapshot);
         importBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', importTemplate);
@@ -538,7 +538,7 @@
         }       
         function closeElementModal() {
             elementModal.style.display = 'none';
-        }       
+        }
         function openEditModal(elementId) {
             currentEditElement = document.getElementById(elementId);
             if (!currentEditElement) return;
@@ -629,10 +629,10 @@
             // Element mit korrekten Werten erstellen
             let elementHTML = createFormElement(elementType, elementId);
             formContainer.insertAdjacentHTML('beforeend', elementHTML);
-            
+
             // Neues Element speichern und Bearbeitungsdialog öffnen
             newlyAddedElement = document.getElementById(elementId);
-            
+
             // Automatisch Bearbeitungsdialog öffnen
             setTimeout(() => {
                 openEditModal(elementId);
@@ -889,9 +889,6 @@
             const logoInput = document.getElementById("header-logo-input");
             const headerTextInput = document.querySelector("input[name='headertext']");
             const file = logoInput.files[0];
-            const headerText = headerTextInput.value;
-            const headerSubTextInput = document.querySelector("input[name='headersubtext']");
-            const headerSubText = headerSubTextInput.value;
 
             // Nur PNG zulassen
             if (file && file.type === "image/png") {
@@ -913,7 +910,7 @@
                 // Headertext aktualisieren
                 document.querySelector(".prev-header-text").textContent = headerText;
                 // header text speichern
-                window.headerText = headerText;
+                window.headerTitle = headerTitle;
             }
             
             if (headerSubText) {
@@ -940,7 +937,7 @@
     // Formular als HTML herunterladen
         function downloadForm() {
             // Formular-HTML erstellen
-            let formHTML = 
+            let formHTML =
             `
             <!DOCTYPE html>
             <html lang="de">
@@ -1049,7 +1046,7 @@
             });
             
             // Submit-Button hinzufügen
-            formHTML += 
+            formHTML +=
             `
                     <div class="form-element">
                         <button type="submit" class="submit-btn">Absenden</button>
