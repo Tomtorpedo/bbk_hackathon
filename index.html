@@ -85,6 +85,7 @@
             z-index: 1000;
         }
 
+        /*
         .tool-header {
             padding: 5px 30px;
             display: grid;
@@ -94,6 +95,7 @@
         .tool-header-buttons {
             text-align: right;
         }
+        */
 
         .tool-container {
             height: calc(100vh - 50px);
@@ -145,27 +147,50 @@
             border-radius: 8px;
         }
 
+/* Drag and Drop Area */
+        .Drag-and-Drop-Container-Header{
+            height: 50px;
+            margin: 15px 5px 5px 5px;
+            align-content: center;
+            padding: 10px;
+            background-color: rgba(204, 204, 204, 0.6);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
         .Drag-and-Drop-Container {
-            flex: 1 1 auto;
             overflow-y: auto;
+            overflow-x: hidden;
             min-height: 0;
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
             border-radius: 8px;
-        }
-        .newElement {
-            margin: 5px;
-            padding: 3px;
-            color: white;
-            background-color: #45a049;
-            border-radius: 4px;
-            width: 85%;
-        }
-        .newElement:hover {
-            cursor: grab;
+            box-sizing: border-box;
         }
 
+        .Drag-and-Drop-Elements {
+            margin: 10px 0;
+            padding: 3px;
+            background-color: #77a7af;
+            outline: 2px solid #396f77;
+            border-radius: 4px;
+            max-width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            text-align: left;
+            align-items: center;
+        }
+        .Drag-and-Drop-Elements img{
+            padding: 5px;
+        }
+        .Drag-and-Drop-Elements:hover {
+            cursor: grab;
+            background-color: #648c93;
+            outline: 2px solid #224247;
+        }
+
+/*Forms*/
         .form-element {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -189,8 +214,10 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-bottom: 10px;
+            resize: vertical;
         }
-        
+
+        /*Elements*/
         .element-actions {
             position: absolute;
             top: 10px;
@@ -198,8 +225,41 @@
             display: flex;
             gap: 5px;
         }
+        .element-actions button{
+            width: 25px;
+            height: 25px;
+        }
+        .element-actions img{
+            width: 15px;
+            height: 15px;
+        }
 
-    /* Modal Styling */
+        .edit-btn, .delete-btn {
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            align-content: center;
+        }
+
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .delete-btn {
+            background-color: #ff5252;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff0000;
+        }
+
+        /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
@@ -272,11 +332,12 @@
             margin-right: 8px;
         }
 
-        .add-option-btn, .remove-option-btn, .header-btn {
+        .add-option-btn, .remove-option-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+
         }
 
         .add-option-btn {
@@ -291,7 +352,9 @@
         }
         
         .modal-buttons {
+            padding: 5px;
             display: flex;
+            flex-direction: row;
             justify-content: flex-end;
             margin-top: 20px;
         }
@@ -301,24 +364,26 @@
             margin-left: 10px;
             border: none;
             border-radius: 4px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             cursor: pointer;
+            background-color: #77a7af;
+            outline: 1px solid #396f77;
         }
-        
-        .confirm-btn {
-            background-color: #4CAF50;
-            color: white;
+        .modal-btn:hover{
+            background-color: #648c93;
+            outline: 1px solid #224247;
+        }
+        .modal-btn img{
+            margin-right: 5px;
+        }
+        .confirm-btn:disabled {
+            background-color: #9bd7e1;
+            outline: 1px solid #53a2ae;
         }
 
-        .confirm-btn:disabled {
-            background-color: #6a6a6a;
-            color: white;
-        }
-        
-        .cancel-btn {
-            background-color: #f44336;
-            color: white;
-        }
-        
         .radio-group, .checkbox-group {
             margin: 10px 0;
         }
@@ -335,32 +400,17 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            text-align: left;
+            vertical-align: center;
+            align-items: center;
+            background-color: #77a7af;
+            outline: 1px solid #396f77;
         }
-
-        .edit-btn, .delete-btn {
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .edit-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background-color: #0b7dda;
-        }
-
-        .delete-btn {
-            background-color: #ff5252;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background-color: #ff0000;
+        .btn:hover{
+            background-color: #648c93;
+            outline: 1px solid #224247;
         }
 
         .action-buttons {
@@ -369,73 +419,63 @@
             margin-top: 20px;
         }
 
-
-
-
         /* export Buttons */
 
         .export-buttons {
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
-            padding: 5px;
+            padding: 10px;
             border-radius: 8px;
             display: grid;
             grid-auto-columns: auto auto;
         }
-        .download-btn {
-            background-color: #2196F3;
-            color: white;
+        .export-buttons button{
+            margin-top: 5px;
+            margin-bottom: 5px;
+            height: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
         }
-        .download-btn:hover {
-            background-color: #0b7dda;
-        }
-
-        /* snapshot Styling */
-        .snapshot-btn {
-            background-color: #9C27B0;
-            color: white;
+        .export-buttons img{
+            margin-right: 5px;
         }
 
-        .snapshot-btn:hover {
-            background-color: #7B1FA2;
-        }
-
-        .import-btn {
-            background-color: #FF9800;
-            color: white;
-        }
-
-        .import-btn:hover {
-            background-color: #F57C00;
-        }
         .file-input {
             display: none;
         }
 
         /* header-edit-container Styling */
         .header-edit-container input {
-            margin: 5px;
+            margin: 5px 10px 10px 5px;
             width: 90%;
         }
-        .header-btn {
-            background-color: #4CAF50;
-            color: white;
+        .header-edit-container label {
+            margin-left: 5px;
+            font-weight: bold;
         }
-        .header-btn:hover {
-            background-color: #45a049;
+        .header-btn {
+            width: 100%;
+            height: 30px;
         }
 
+        .header-btn img{
+            margin-right: 5px;
+        }
 
         /* <img src="data:image/svg+xml;base64,"  alt="icon">  line für icon muss base64 string*/
     </style>
 </head>
 
 <header>
+    <!--
+    ## Hier wäre eine Toolheader möglich mit weiteren auswahlmögichkeiten für ein auswertungstool oder ähnliches ##
+
     <div class="tool-header">
         <div class="tool-header-logo">LOGO</div>
-        <div class="tool-header-buttons">
-        </div>
+        <div class="tool-header-buttons"></div>
     </div>
+    -->
 </header>
 
 <body>
@@ -447,69 +487,70 @@
                     <label for="header-logo-file">Logo hochladen:</label>
                     <input type="file" id="header-logo-file" name="header-logo-file" accept="image/png">
                     <label for="headertitle">Titel:</label>
-                    <input type="text" id="headertitle" name="headertitle" placeholder="headertitle">
+                    <input type="text" id="headertitle" name="headertitle" placeholder="Titel">
                     <label for="headersubtext">Untertitel:</label>
-                    <input type="text" id="headersubtext" name="headersubtext" placeholder="headersubtext">
+                    <input type="text" id="headersubtext" name="headersubtext" placeholder="Untertitel">
                 </div>
                 <div class="action-buttons">
                     <button type="button" class="btn header-btn" id="add-header-logo-btn">
                         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTcgM0g1YTIgMiAwIDAgMC0yIDJ2MTRhMiAyIDAgMCAwIDIgMmgxNGMxLjEgMCAyLS45IDItMlY3bC00LTR6bTIgMTZINVY1aDExLjE3TDE5IDcuODNWMTl6bS03LTdjLTEuNjYgMC0zIDEuMzQtMyAzczEuMzQgMyAzIDMgMy0xLjM0IDMtMy0xLjM0LTMtMy0zek02IDZoOXY0SDZ6Ii8+PC9zdmc+"  alt="icon">
-                        Header Speichern
+                        <p>Header Speichern</p>
                     </button>
                 </div>
             </div>
+            <div class="Drag-and-Drop-Container-Header">
+                <b>Elementauswahl</b>
+            </div>
             <div class="Drag-and-Drop-Container">
-                <div class="Drag-and-Drop-Container-Header">
-                    <h2>Elementauswahl</h2>
-                </div>
-                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">
+
+                <div class="Drag-and-Drop-Elements" id="addText" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64," alt="icon">
-                    Text hinzufügen
+                    <p>Text hinzufügen</p>
                 </div>
-                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,"alt="icon">
-                    Textblock hinzufügen
+                    <p>Textblock hinzufügen</p>
                 </div>
-                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgNmMwLTEuMS0uOS0yLTItMkg0Yy0xLjEgMC0yIC45LTIgMnYxMmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjZ6bS0yIDAtOCA1LTgtNWgxNnptMCAxMkg0VjhsOCA1IDgtNXYxMHoiLz48L3N2Zz4=" alt="icon">
-                    E-Mail hinzufügen
+                    <p>E-Mail hinzufügen</p>
                 </div>
-                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxNUg1LjV2LTQuNUg0VjloM3Y2em02LjUtMS41aC0zdi0xaDJjLjU1IDAgMS0uNDUgMS0xVjEwYzAtLjU1LS40NS0xLTEtMUg5djEuNWgzdjFoLTJjLS41NSAwLTEgLjQ1LTEgMVYxNWg0LjV2LTEuNXptNiAuNXYtNGMwLS41NS0uNDUtMS0xLTFIMTV2MS41aDN2MWgtMnYxaDJ2MWgtM1YxNWgzLjVjLjU1IDAgMS0uNDUgMS0xeiIvPjwvc3ZnPg=="alt="icon">
-                    Zahl hinzufügen
+                    <p>Zahl hinzufügen</p>
                 </div>
-                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxMWgydjJIN3YtMnptMTQtNXYxNGMwIDEuMS0uOSAyLTIgMkg1YTIgMiAwIDAgMS0yLTJsLjAxLTE0YzAtMS4xLjg4LTIgMS45OS0yaDFWMmgydjJoOFYyaDJ2MmgxYzEuMSAwIDIgLjkgMiAyek01IDhoMTRWNkg1djJ6bTE0IDEyVjEwSDV2MTBoMTR6bS00LTdoMnYtMmgtMnYyem0tNCAwaDJ2LTJoLTJ2MnoiLz48L3N2Zz4=" alt="icon">
-                    Datum hinzufügen
+                    <p>Datum hinzufügen</p>
                 </div>
-                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMgNy41aDV2MmgtNXptMCA3aDV2MmgtNXpNMTkgM0g1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY1aDE0djE0ek0xMSA2SDZ2NWg1VjZ6bS0xIDRIN1Y3aDN2M3ptMSAzSDZ2NWg1di01em0tMSA0SDd2LTNoM3YzeiIvPjwvc3ZnPg==" alt="icon">
-                    Auswahlmenü hinzufügen
+                    <p>Auswahlmenü hinzufügen</p>
                 </div>
-                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgNXYxNEg1VjVoMTRtMC0ySDVjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNWMwLTEuMS0uOS0yLTItMnoiLz48L3N2Zz4=" alt="icon">
-                    Single-Choice hinzufügen
+                    <p>Single-Choice hinzufügen</p>
                 </div>
-                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">
+                <div class="Drag-and-Drop-Elements" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgN2gtOXYyaDlWN3ptMCA4aC05djJoOXYtMnpNNS41NCAxMSAyIDcuNDZsMS40MS0xLjQxIDIuMTIgMi4xMiA0LjI0LTQuMjQgMS40MSAxLjQxTDUuNTQgMTF6bTAgOEwyIDE1LjQ2bDEuNDEtMS40MSAyLjEyIDIuMTIgNC4yNC00LjI0IDEuNDEgMS40MUw1LjU0IDE5eiIvPjwvc3ZnPg==" alt="icon">
-                    Multiple-Choice hinzufügen
+                    <p>Multiple-Choice hinzufügen</p>
                 </div>
             </div>
             <div class="export-buttons">
                 <div class="Form">
                     <button type="button" class="btn download-btn" id="download-btn">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
-                    Formular herunterladen
+                    <p>Formular herunterladen</p>
                 </button>
                 </div>
                 <div class="Tool">
                     <button type="button" class="btn snapshot-btn" id="snapshot-btn">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
-                    Vorlage speichern
+                    <p>Vorlage speichern</p>
                 </button>
                     <button type="button" class="btn import-btn" id="import-btn">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNOSAxNmg2di02aDRsLTctNy03IDdoNHY2em0zLTEwLjE3TDE0LjE3IDhIMTN2NmgtMlY4SDkuODNMMTIgNS44M3pNNSAxOGgxNHYySDV6Ii8+PC9zdmc+"  alt="icon">
-                    Vorlage importieren
+                    <p>Vorlage importieren</p>
                 </button>
                     <input type="file" id="file-input" class="file-input" accept=".json">
                 </div>
@@ -549,11 +590,11 @@
             <div class="modal-buttons">
                 <button type="button" class="modal-btn cancel-btn" id="cancel-btn">
                     <img src="data:image/svg+xml;base64,"  alt="icon">
-                    Abbrechen
+                    <p>Abbrechen</p>
                 </button>
                 <button type="button" class="modal-btn confirm-btn" id="confirm-btn">
                     <img src="data:image/svg+xml;base64,"  alt="icon">
-                    Hinzufügen
+                    <p>Hinzufügen</p>
                 </button>
             </div>
         </div>
