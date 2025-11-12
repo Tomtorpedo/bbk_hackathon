@@ -27,11 +27,27 @@
             margin-bottom: 30px;
         }
         
-        .form-container {
+        .prev-body {
             background-color: white;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+        }
+
+        .form-container {
+            padding: 10px;
+            margin-bottom: 0px;
+        }
+
+        .insert-div {
+            position: relative;
+            background-color: rgba(161, 255, 189, 0.623);
+            height: 100px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 10px;
+            border-radius: 10px;
+            border: 1px dotted black;
         }
 
         header {
@@ -99,7 +115,7 @@
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
             padding: 5px;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .Drag-and-Drop-Container {
@@ -109,13 +125,21 @@
             margin: 15px 5px 5px 5px;
             padding: 5px;
             background-color: rgba(204, 204, 204, 0.6);
-            border-radius: 10px;
+            border-radius: 8px;
+        }
+        .newElement {
+            margin: 5px;
+            padding: 3px;
+            color: white;
+            background-color: #45a049;
+            border-radius: 4px;
+            width: 85%;
         }
         .export-buttons {
             background-color: rgba(204, 204, 204, 0.6);
             margin: 5px;
             padding: 5px;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .form-element {
@@ -346,7 +370,14 @@
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
-
+                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">Text hinzufügen</div>
+                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">Textblock hinzufügen</div>
+                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">E-Mail hinzufügen</div>
+                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">Zahl hinzufügen</div>
+                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">Datum hinzufügen</div>
+                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">Auswahlmenü hinzufügen</div>
+                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">Single-Choice hinzufügen</div>
+                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">Multiple-Choice hinzufügen</div>
             </div>
             <div class="export-buttons">
                 <button class="btn download-btn" id="download-btn">Formular herunterladen</button>
@@ -366,6 +397,7 @@
                 <div class="form-container" id="form-container">
                     <!-- Formularelemente werden hier dynamisch hinzugefügt -->
                 </div>
+                <div class="insert-div" id="insert-div" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"><h2>Neue Elemente hier einfügen</h2></div>
             </div>
         </div>
     </div>
@@ -436,6 +468,59 @@
     </div>
 
     <script>
+        // Drag n' Drop funktionen
+        function dragstartHandler(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function dragoverHandler(ev) {
+            ev.preventDefault();
+        }
+
+        function dropHandler(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            console.log(data)
+
+            const elementId = 'element-' + elementCount;
+            elementCount++;
+            let elementHTML = '';
+            switch(data) {
+                case 'addText':
+                    elementHTML = createTextElement(elementId);
+                    elementTypeCount.text++;
+                    break;
+                case 'addTextBlock':
+                    elementHTML = createTextareaElement(elementId);
+                    elementTypeCount.textarea++;
+                    break;
+                case 'addEmail':
+                    elementHTML = createEmailElement(elementId);
+                    elementTypeCount.email++;
+                    break;
+                case 'addNumber':
+                    elementHTML = createNumberElement(elementId);
+                    elementTypeCount.number++;
+                    break;
+                case 'addDate':
+                    elementHTML = createDateElement(elementId);
+                    elementTypeCount.date++;
+                    break;
+                case 'addDropdown':
+                    elementHTML = createDropdownElement(elementId);
+                    elementTypeCount.dropdown++;
+                    break;
+                case 'addRadio':
+                    elementHTML = createRadioElement(elementId);
+                    elementTypeCount.radio++;
+                    break;
+                case 'addCheckbox':
+                    elementHTML = createCheckboxElement(elementId);
+                    elementTypeCount.checkbox++;
+                    break;
+            }
+        }
+
         // Element-Zähler
         let elementCount = 0;
         let currentEditElement = null;
@@ -927,13 +1012,12 @@
     <div class="header-container" id="header-container">
         <div class="prev-header-content">
             <div class="header-logo"><img id="header-img" src="${window.headerLogoNew}" alt="LOGO" width="150px" height="150px"></div>
-            <div class="prev-header-text">${window.headerText}</div>
+            <div class="prev-header-text"><h1>${window.headerText}</h1></div>
         </div>
-        <div class="header-sub-text">${window.headerSubText}</div>
+        <div class="header-sub-text"><h3>${window.headerSubText}</h3></div>
     </div>
 </header>
 <body>
-    <h1>Formular</h1>
     <form id="generated-form">
 `;
             
