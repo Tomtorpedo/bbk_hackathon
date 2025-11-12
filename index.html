@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formular-Editor</title>
-    <style>
+     <style>
 
         /* Embedded Material Icons font (WOFF2, Base64) */
         @font-face 
@@ -66,9 +66,9 @@
 
         .insert-div {
             position: relative;
-            background-color: rgba(161, 255, 189, 0.623);
+            background-color: rgba(195, 195, 195, 0.62);
             height: 100px;
-            margin-bottom: 10px;
+            margin: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -165,12 +165,6 @@
         .newElement:hover {
             cursor: grab;
         }
-        .export-buttons {
-            background-color: rgba(204, 204, 204, 0.6);
-            margin: 5px;
-            padding: 5px;
-            border-radius: 8px;
-        }
 
         .form-element {
             background-color: #f9f9f9;
@@ -204,56 +198,8 @@
             display: flex;
             gap: 5px;
         }
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
 
-        .edit-btn, .delete-btn {
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .edit-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        .edit-btn:hover {
-            background-color: #0b7dda;
-        }
-        
-        .delete-btn {
-            background-color: #ff5252;
-            color: white;
-        }
-        
-        .delete-btn:hover {
-            background-color: #ff0000;
-        }
-        
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .download-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        .download-btn:hover {
-            background-color: #0b7dda;
-        }
-        
-        /* Modal Styling */
+    /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
@@ -264,7 +210,6 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
         }
-        
         .modal-content {
             background-color: white;
             margin: 10% auto;
@@ -275,12 +220,10 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-        
         .modal h2 {
             margin-top: 0;
             color: #333;
         }
-        
         .modal label {
             display: block;
             margin-top: 10px;
@@ -319,8 +262,6 @@
             margin-bottom: 10px;
         }
 
-
-        
         .option-item {
             display: flex;
             margin-bottom: 8px;
@@ -336,14 +277,6 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-        }
-
-        .header-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .header-btn:hover {
-            background-color: #45a049;
         }
 
         .add-option-btn {
@@ -395,6 +328,68 @@
             margin-bottom: 5px;
         }
 
+        /* Buttons */
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .edit-btn, .delete-btn {
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .delete-btn {
+            background-color: #ff5252;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+
+
+
+        /* export Buttons */
+
+        .export-buttons {
+            background-color: rgba(204, 204, 204, 0.6);
+            margin: 5px;
+            padding: 5px;
+            border-radius: 8px;
+            display: grid;
+            grid-auto-columns: auto auto;
+        }
+        .download-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        .download-btn:hover {
+            background-color: #0b7dda;
+        }
+
         /* snapshot Styling */
         .snapshot-btn {
             background-color: #9C27B0;
@@ -422,7 +417,16 @@
             margin: 5px;
             width: 90%;
         }
+        .header-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .header-btn:hover {
+            background-color: #45a049;
+        }
 
+
+        /* <img src="data:image/svg+xml;base64,"  alt="icon">  line für icon muss base64 string*/
     </style>
 </head>
 
@@ -435,6 +439,7 @@
 </header>
 
 <body>
+    
     <div class="tool-container">
         <div class="editor-container">
             <div class="options-contianer">
@@ -447,24 +452,67 @@
                     <input type="text" id="headersubtext" name="headersubtext" placeholder="headersubtext">
                 </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn header-btn" id="add-header-logo-btn">Header Speichern</button>
+                    <button type="button" class="btn header-btn" id="add-header-logo-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTcgM0g1YTIgMiAwIDAgMC0yIDJ2MTRhMiAyIDAgMCAwIDIgMmgxNGMxLjEgMCAyLS45IDItMlY3bC00LTR6bTIgMTZINVY1aDExLjE3TDE5IDcuODNWMTl6bS03LTdjLTEuNjYgMC0zIDEuMzQtMyAzczEuMzQgMyAzIDMgMy0xLjM0IDMtMy0xLjM0LTMtMy0zek02IDZoOXY0SDZ6Ii8+PC9zdmc+"  alt="icon">
+                        Header Speichern
+                    </button>
                 </div>
             </div>
             <div class="Drag-and-Drop-Container">
-                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">Text hinzufügen</div>
-                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">Textblock hinzufügen</div>
-                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">E-Mail hinzufügen</div>
-                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">Zahl hinzufügen</div>
-                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">Datum hinzufügen</div>
-                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">Auswahlmenü hinzufügen</div>
-                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">Single-Choice hinzufügen</div>
-                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">Multiple-Choice hinzufügen</div>
+                <div class="Drag-and-Drop-Container-Header">
+                    <h2>Elementauswahl</h2>
+                </div>
+                <div class="newElement" id="addText" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64," alt="icon">
+                    Text hinzufügen
+                </div>
+                <div class="newElement" id="addTextBlock" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,"alt="icon">
+                    Textblock hinzufügen
+                </div>
+                <div class="newElement" id="addEmail" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgNmMwLTEuMS0uOS0yLTItMkg0Yy0xLjEgMC0yIC45LTIgMnYxMmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjZ6bS0yIDAtOCA1LTgtNWgxNnptMCAxMkg0VjhsOCA1IDgtNXYxMHoiLz48L3N2Zz4=" alt="icon">
+                    E-Mail hinzufügen
+                </div>
+                <div class="newElement" id="addNumber" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxNUg1LjV2LTQuNUg0VjloM3Y2em02LjUtMS41aC0zdi0xaDJjLjU1IDAgMS0uNDUgMS0xVjEwYzAtLjU1LS40NS0xLTEtMUg5djEuNWgzdjFoLTJjLS41NSAwLTEgLjQ1LTEgMVYxNWg0LjV2LTEuNXptNiAuNXYtNGMwLS41NS0uNDUtMS0xLTFIMTV2MS41aDN2MWgtMnYxaDJ2MWgtM1YxNWgzLjVjLjU1IDAgMS0uNDUgMS0xeiIvPjwvc3ZnPg=="alt="icon">
+                    Zahl hinzufügen
+                </div>
+                <div class="newElement" id="addDate" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxMWgydjJIN3YtMnptMTQtNXYxNGMwIDEuMS0uOSAyLTIgMkg1YTIgMiAwIDAgMS0yLTJsLjAxLTE0YzAtMS4xLjg4LTIgMS45OS0yaDFWMmgydjJoOFYyaDJ2MmgxYzEuMSAwIDIgLjkgMiAyek01IDhoMTRWNkg1djJ6bTE0IDEyVjEwSDV2MTBoMTR6bS00LTdoMnYtMmgtMnYyem0tNCAwaDJ2LTJoLTJ2MnoiLz48L3N2Zz4=" alt="icon">
+                    Datum hinzufügen
+                </div>
+                <div class="newElement" id="addDropdown" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMgNy41aDV2MmgtNXptMCA3aDV2MmgtNXpNMTkgM0g1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY1aDE0djE0ek0xMSA2SDZ2NWg1VjZ6bS0xIDRIN1Y3aDN2M3ptMSAzSDZ2NWg1di01em0tMSA0SDd2LTNoM3YzeiIvPjwvc3ZnPg==" alt="icon">
+                    Auswahlmenü hinzufügen
+                </div>
+                <div class="newElement" id="addRadio" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgNXYxNEg1VjVoMTRtMC0ySDVjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNWMwLTEuMS0uOS0yLTItMnoiLz48L3N2Zz4=" alt="icon">
+                    Single-Choice hinzufügen
+                </div>
+                <div class="newElement" id="addCheckbox" draggable="true" ondragstart="dragstartHandler(event)">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjIgN2gtOXYyaDlWN3ptMCA4aC05djJoOXYtMnpNNS41NCAxMSAyIDcuNDZsMS40MS0xLjQxIDIuMTIgMi4xMiA0LjI0LTQuMjQgMS40MSAxLjQxTDUuNTQgMTF6bTAgOEwyIDE1LjQ2bDEuNDEtMS40MSAyLjEyIDIuMTIgNC4yNC00LjI0IDEuNDEgMS40MUw1LjU0IDE5eiIvPjwvc3ZnPg==" alt="icon">
+                    Multiple-Choice hinzufügen
+                </div>
             </div>
             <div class="export-buttons">
-                <button type="button" class="btn download-btn" id="download-btn">Formular herunterladen</button>
-                <button type="button" class="btn snapshot-btn" id="snapshot-btn">Vorlage speichern</button>
-                <button type="button" class="btn import-btn" id="import-btn">Vorlage importieren</button>
-                <input type="file" id="file-input" class="file-input" accept=".json">
+                <div class="Form">
+                    <button type="button" class="btn download-btn" id="download-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
+                    Formular herunterladen
+                </button>
+                </div>
+                <div class="Tool">
+                    <button type="button" class="btn snapshot-btn" id="snapshot-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ5IDIgMiA2LjQ5IDIgMTJzNC40OSAxMCAxMCAxMCAxMC00LjQ5IDEwLTEwUzE3LjUxIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTIuNTktMTEuNDFMMTYgMTBsLTQgNC00LTQgMS40MS0xLjQxTDExIDEwLjE3VjZoMnY0LjE3bDEuNTktMS41OHpNMTcgMTdIN3YtMmgxMHYyeiIvPjwvc3ZnPg==" alt="icon">
+                    Vorlage speichern
+                </button>
+                    <button type="button" class="btn import-btn" id="import-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNOSAxNmg2di02aDRsLTctNy03IDdoNHY2em0zLTEwLjE3TDE0LjE3IDhIMTN2NmgtMlY4SDkuODNMMTIgNS44M3pNNSAxOGgxNHYySDV6Ii8+PC9zdmc+"  alt="icon">
+                    Vorlage importieren
+                </button>
+                    <input type="file" id="file-input" class="file-input" accept=".json">
+                </div>
             </div>
         </div>
         <div class="prev-container">
@@ -499,8 +547,14 @@
                 <option value="checkbox">Checkbox</option>
             </select>
             <div class="modal-buttons">
-                <button type="button" class="modal-btn cancel-btn" id="cancel-btn">Abbrechen</button>
-                <button type="button" class="modal-btn confirm-btn" id="confirm-btn">Hinzufügen</button>
+                <button type="button" class="modal-btn cancel-btn" id="cancel-btn">
+                    <img src="data:image/svg+xml;base64,"  alt="icon">
+                    Abbrechen
+                </button>
+                <button type="button" class="modal-btn confirm-btn" id="confirm-btn">
+                    <img src="data:image/svg+xml;base64,"  alt="icon">
+                    Hinzufügen
+                </button>
             </div>
         </div>
     </div>
@@ -519,11 +573,19 @@
                 <div id="edit-options-list">
                     <!-- Optionen werden hier dynamisch hinzugefügt -->
                 </div>
-                <button type="button" class="add-option-btn" id="add-option-btn">Option hinzufügen</button>
+                <button type="button" class="add-option-btn" id="add-option-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgMTNoLTZ2NmgtMnYtNkg1di0yaDZWNWgydjZoNnYyeiIvPjwvc3ZnPg=="  alt="icon">
+                </button>
             </div>
             <div class="modal-buttons">
-                <button type="button" class="modal-btn cancel-btn" id="edit-cancel-btn">Abbrechen</button>
-                <button type="button" class="modal-btn confirm-btn" id="edit-confirm-btn">Speichern</button>
+                <button type="button" class="modal-btn cancel-btn" id="edit-cancel-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ3IDIgMiA2LjQ3IDIgMTJzNC40NyAxMCAxMCAxMCAxMC00LjQ3IDEwLTEwUzE3LjUzIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTMuNTktMTNMMTIgMTAuNTkgOC40MSA3IDcgOC40MSAxMC41OSAxMiA3IDE1LjU5IDguNDEgMTcgMTIgMTMuNDEgMTUuNTkgMTcgMTcgMTUuNTkgMTMuNDEgMTIgMTcgOC40MXoiLz48L3N2Zz4="  alt="icon">
+                    Abbrechen
+                </button>
+                <button type="button" class="modal-btn confirm-btn" id="edit-confirm-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNOSAxNi4xNyA0LjgzIDEybC0xLjQyIDEuNDFMOSAxOSAyMSA3bC0xLjQxLTEuNDFMOSAxNi4xN3oiLz48L3N2Zz4="  alt="icon">
+                    Speichern
+                </button>
             </div>
         </div>
     </div>
@@ -695,8 +757,8 @@
                             <small></small>
                             <input type="text" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="">
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -711,8 +773,8 @@
                             <small></small>
                             <textarea name="${id}-${type}" id="${id}-${type}" rows="4" placeholder="${placeholder}"></textarea>
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -725,8 +787,8 @@
                             <small></small>
                             <input type="email" name="${id}-${type}" id="${id}-${type}" placeholder="beispiel@email.com" value="">
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -739,8 +801,8 @@
                             <small></small>
                             <input type="number" name="${id}-${type}" id="${id}-${type}" placeholder="Zahl eingeben" value="">
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -754,8 +816,8 @@
                             <small></small>
                             <input type="date" name="${id}-${type}" id="${id}-${type}" value="${today}">
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -772,8 +834,8 @@
                                 ${options.map((option, index) => `<option value="${option}">${option}</option>`).join('')}
                             </select>
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -791,8 +853,8 @@
                                 `).join('')}
                             </div>
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -810,8 +872,8 @@
                                 `).join('')}
                             </div>
                             <div class="element-actions">
-                                <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
-                                <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
+                                <button class="edit-btn" onclick="openEditModal('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJtMTQuMDYgOS4wMi45Mi45Mkw1LjkyIDE5SDV2LS45Mmw5LjA2LTkuMDZNMTcuNjYgM2MtLjI1IDAtLjUxLjEtLjcuMjlsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzYS45OTYuOTk2IDAgMCAwIDAtMS40MWwtMi4zNC0yLjM0Yy0uMi0uMi0uNDUtLjI5LS43MS0uMjl6bS0zLjYgMy4xOUwzIDE3LjI1VjIxaDMuNzVMMTcuODEgOS45NGwtMy43NS0zLjc1eiIvPjwvc3ZnPg=="  alt="icon"></button>
+                                <button class="delete-btn" onclick="deleteElement('${id}')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTQuMTIgMTAuNDcgMTIgMTIuNTlsLTIuMTMtMi4xMi0xLjQxIDEuNDFMMTAuNTkgMTRsLTIuMTIgMi4xMiAxLjQxIDEuNDFMMTIgMTUuNDFsMi4xMiAyLjEyIDEuNDEtMS40MUwxMy40MSAxNGwyLjEyLTIuMTJ6TTE1LjUgNGwtMS0xaC01bC0xIDFINXYyaDE0VjR6TTYgMTljMCAxLjEuOSAyIDIgMmg4YzEuMSAwIDItLjkgMi0yVjdINnYxMnpNOCA5aDh2MTBIOFY5eiIvPjwvc3ZnPg=="  alt="icon"></button>
                             </div>
                         </div>
                     `;
@@ -862,7 +924,7 @@
             optionItem.className = 'option-item';
             optionItem.innerHTML = `
                 <input id="option-${index}" type="text" value="${value}" placeholder="Optionstext">
-                <button type="button" class="remove-option-btn" onclick="this.parentElement.remove()">Entfernen</button>
+                <button type="button" class="remove-option-btn" onclick="this.parentElement.remove()"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgMTNINXYtMmgxNHYyeiIvPjwvc3ZnPg=="  alt="icon"></button>
             `;
             editOptionsList.appendChild(optionItem);
         }
@@ -1215,8 +1277,8 @@
                         });
                     });
                 <\/script>
-            <\/body>
-            <\/html>`;
+            </body>
+            </html>`;
 
             // Datei herunterladen
             const blob = new Blob([formHTML], { type: 'text/html' });
