@@ -693,7 +693,7 @@
                         <div class="form-element" id="${id}" data-type="text">
                             <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <input type="text" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="${value}">
+                            <input type="text" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="">
                             <div class="element-actions">
                                 <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                                 <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
@@ -709,7 +709,7 @@
                         <div class="form-element" id="${id}" data-type="textarea">
                             <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <textarea name="${id}-${type}" id="${id}-${type}" rows="4" placeholder="${placeholder}">${value}</textarea>
+                            <textarea name="${id}-${type}" id="${id}-${type}" rows="4" placeholder="${placeholder}"></textarea>
                             <div class="element-actions">
                                 <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                                 <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
@@ -719,13 +719,11 @@
 
                 case 'email':
                     label = customLabel || `E-Mail-${elementTypeCount.email}`;
-                    value = `beispiel${elementTypeCount.email}@email.com`;
-                    placeholder = "E-Mail-Adresse eingeben";
                     return `
                         <div class="form-element" id="${id}" data-type="email">
                             <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <input type="email" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="${value}">
+                            <input type="email" name="${id}-${type}" id="${id}-${type}" placeholder="beispiel@email.com" value="">
                             <div class="element-actions">
                                 <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                                 <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
@@ -735,13 +733,11 @@
 
                 case 'number':
                     label = customLabel || `Zahl-${elementTypeCount.number}`;
-                    value = elementTypeCount.number;
-                    placeholder = "Zahl eingeben";
                     return `
                         <div class="form-element" id="${id}" data-type="number">
                             <label for="${id}-${type}">${label}:</label>
                             <small></small>
-                            <input type="number" name="${id}-${type}" id="${id}-${type}" placeholder="${placeholder}" value="${value}">
+                            <input type="number" name="${id}-${type}" id="${id}-${type}" placeholder="Zahl eingeben" value="">
                             <div class="element-actions">
                                 <button class="edit-btn" onclick="openEditModal('${id}')">Bearbeiten</button>
                                 <button class="delete-btn" onclick="deleteElement('${id}')">Löschen</button>
@@ -1121,9 +1117,6 @@
             // Submit-Button hinzufügen
             formHTML += 
             `
-                    <div class="form-element">
-                        <button type="submit" class="submit-btn">Absenden</button>
-                    </div>
                 </form>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
