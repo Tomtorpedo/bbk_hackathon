@@ -479,14 +479,15 @@
 
         function dropHandler(ev) {
             ev.preventDefault();
-            const data = ev.dataTransfer.getData("text");
-            console.log(data)
+            let data = ev.dataTransfer.getData("text");
+            console.log(typeof(data));
 
             const elementId = 'element-' + elementCount;
             elementCount++;
             let elementHTML = '';
             switch(data) {
                 case 'addText':
+                    console.log("test")
                     elementHTML = createTextElement(elementId);
                     elementTypeCount.text++;
                     break;
