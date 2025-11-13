@@ -494,7 +494,7 @@
                     <input type="text" id="headersubtext" name="headersubtext" placeholder="Untertitel">
                 </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn header-btn" id="add-header-logo-btn">
+                    <button type="button" class="btn header-btn" id="save-header-edit-btn">
                         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTcgM0g1YTIgMiAwIDAgMC0yIDJ2MTRhMiAyIDAgMCAwIDIgMmgxNGMxLjEgMCAyLS45IDItMlY3bC00LTR6bTIgMTZINVY1aDExLjE3TDE5IDcuODNWMTl6bS03LTdjLTEuNjYgMC0zIDEuMzQtMyAzczEuMzQgMyAzIDMgMy0xLjM0IDMtMy0xLjM0LTMtMy0zek02IDZoOXY0SDZ6Ii8+PC9zdmc+"  alt="icon">
                         <p>Header Speichern</p>
                     </button>
@@ -660,7 +660,7 @@
         const snapshotBtn = document.getElementById('snapshot-btn');
         const importBtn = document.getElementById('import-btn');
         const fileInput = document.getElementById('file-input');
-        const addHeaderLogoBtn = document.getElementById('add-header-logo-btn');
+        const editHeaderBtn = document.getElementById('save-header-edit-btn');
 
 
         // Event-Listener
@@ -674,7 +674,7 @@
         snapshotBtn.addEventListener('click', downloadSnapshot);
         importBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', importTemplate);
-        addHeaderLogoBtn.addEventListener('click', editHeader);
+        editHeaderBtn.addEventListener('click', editHeader);
 
 
     // Modal-Funktionen
